@@ -13,6 +13,9 @@ class User(db.Model, SerializerMixin):
   username = db.Column(db.String, nullable=False)
   email = db.Column(db.String, nullable=False)
 
+  def __repr__(self):
+    return f'User {self.id}: {self.username}, {self.email}'
+
 # class Tag(db.Model, SerializerMixin):
 #   pass
 
