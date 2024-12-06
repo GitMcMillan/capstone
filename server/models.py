@@ -13,5 +13,14 @@ class User(db.Model, SerializerMixin):
   username = db.Column(db.String, nullable=False)
   email = db.Column(db.String, nullable=False)
 
+# class Tag(db.Model, SerializerMixin):
+#   pass
+
+# class Book(db.Model, SerializerMixin):
+#   pass
+
+# class Library(db.Model, SerializerMixin):
+#   pass
+
 
 

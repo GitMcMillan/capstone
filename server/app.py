@@ -9,7 +9,7 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import Test
+from models import User
 from flask_cors import CORS
 
 
@@ -21,13 +21,13 @@ from flask_cors import CORS
 def index():
     return '<h1>Project Server</h1>'
 
-class TestPage(Resource):
+class Users(Resource):
     def get(self):
-        tests = Test.query.all()
+        users = User.query.all()
 
-        return [test.to_dict() for test in tests]
+        return [user.to_dict() for user in users]
     
-api.add_resource(TestPage, '/test')
+api.add_resource(Users, '/users')
 
 
 
