@@ -6,12 +6,12 @@ from config import db
 
 # Models go here!
 
-class Test(db.Model, SerializerMixin):
-  __tablename__ = "Test1"
+class User(db.Model, SerializerMixin):
+  __tablename__ = "users"
 
   id = db.Column(db.Integer, primary_key=True)
-  test_data = db.Column(db.String, default="test1")
-  test_data2 = db.Column(db.String, default="test2")
+  username = db.Column(db.String, nullable=False)
+  email = db.Column(db.String, nullable=False)
 
 
 
