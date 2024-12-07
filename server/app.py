@@ -25,7 +25,7 @@ class Users(Resource):
     def get(self):
         users = User.query.all()
 
-        return [user.to_dict() for user in users]
+        return [user.to_dict() for user in users], 200
     
 api.add_resource(Users, '/users')
 

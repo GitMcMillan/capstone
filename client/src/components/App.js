@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import NavBar from "./NavBar";
+import UserCard from "./UserCard";
 
 function App() {
   //set state values
@@ -28,9 +30,7 @@ function App() {
         <h1>User Data</h1>
         <ul>
           {userData.length > 0 ? (
-            userData.map((item, index) => (
-              <li key={index}>{JSON.stringify(item)}</li>
-            ))
+            userData.map((item, index) => <UserCard key={index} user={item} />)
           ) : (
             <p>No test data available</p>
           )}
@@ -41,6 +41,7 @@ function App() {
 
   return (
     <Router>
+      <NavBar />
       <nav>
         <Link to="/">Home</Link> | <Link to="/users">User Data</Link>
       </nav>
