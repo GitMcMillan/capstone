@@ -9,7 +9,7 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import User
+from models import User, Tag, Book
 from flask_cors import CORS
 
 
@@ -31,11 +31,19 @@ api.add_resource(Users, '/users')
 
 class Tags(Resource):
     def get(self):
-        tags = User.query.all()
+        tags = Tag.query.all()
 
         return [tag.to_dict() for tag in tags], 200
     
 api.add_resource(Tags, '/tags')
+
+class Books(Resource):
+    def get(self):
+        books = Book.query.all()
+
+        return [book.to_dict() for book in books], 200
+    
+api.add_resource(Books, '/books')
 
 
 

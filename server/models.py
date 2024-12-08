@@ -30,8 +30,16 @@ class Tag(db.Model, SerializerMixin):
     return f'Tags: {self.id}: {self.genre}, {self.best_seller}, {self.fiction}, {self.award_winner}, {self.new_release}'
 
 
-# class Book(db.Model, SerializerMixin):
-#   pass
+class Book(db.Model, SerializerMixin):
+  __tablename__ = 'books'
+
+  id = db.Column(db.Integer, primary_key=True)
+  author = db.Column(db.String, nullable=False)
+  page_number = db.Column(db.Integer, nullable=False)
+
+  def __repr__(self):
+    return f'Book: {self.id}: {self.author}, {self.page_number}'
+  
 
 # class Library(db.Model, SerializerMixin):
 #   pass
