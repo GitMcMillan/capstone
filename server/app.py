@@ -29,6 +29,14 @@ class Users(Resource):
     
 api.add_resource(Users, '/users')
 
+class Tags(Resource):
+    def get(self):
+        tags = User.query.all()
+
+        return [tag.to_dict() for tag in tags], 200
+    
+api.add_resource(Tags, '/tags')
+
 
 
 
