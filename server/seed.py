@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User
+from models import db, User, Book, Tag
 
 if __name__ == '__main__':
     fake = Faker()
@@ -18,10 +18,13 @@ if __name__ == '__main__':
 
         #clear data
         db.session.query(User).delete()
+        db.session.query(Book).delete()
+        # db.session.query(Tag).delete()
+        # db.session.query(Library).delete()
 
         #seed users 
         
-        #variable = User(attr)
+        #variable = Model(attr)
         #in _ range(number of instances)
         user = [
             User(
@@ -34,5 +37,20 @@ if __name__ == '__main__':
         #add and commit
         db.session.add_all(user)
         db.session.commit()
+
+        #variable = Model(attr)
+        #in _ range(number of instances)
+        book = [
+            Book(
+            title=fake.sentence(nb_words=randint(2, 7)),
+            author= fake.name(),
+            page_number=fake.random_int(min=50, max=1000) 
+        )
+        for _ in range (100)
+        ]
+        db.session.add_all(book)
+        db.session.commit()
+
+
 
         print("Seed successful")

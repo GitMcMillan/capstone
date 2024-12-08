@@ -34,11 +34,12 @@ class Book(db.Model, SerializerMixin):
   __tablename__ = 'books'
 
   id = db.Column(db.Integer, primary_key=True)
+  title = db.Column(db.String, nullable=False)
   author = db.Column(db.String, nullable=False)
   page_number = db.Column(db.Integer, nullable=False)
 
   def __repr__(self):
-    return f'Book: {self.id}: {self.author}, {self.page_number}'
+    return f'Book: {self.id}:{self.title}, {self.author}, {self.page_number}'
   
 
 # class Library(db.Model, SerializerMixin):
