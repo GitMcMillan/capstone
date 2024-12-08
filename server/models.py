@@ -16,8 +16,19 @@ class User(db.Model, SerializerMixin):
   def __repr__(self):
     return f'User {self.id}: {self.username}, {self.email}'
 
-# class Tag(db.Model, SerializerMixin):
-#   pass
+class Tag(db.Model, SerializerMixin):
+  __tablename__  = "tags"
+
+  id = db.Column(db.Integer, primary_key=True)
+  genre = db.Column(db.String, nullable=False)
+  best_seller = db.Column(db.Boolean, nullable=False)
+  fiction = db.Column(db.Boolean, nullable=False)
+  award_winner = db.Column(db.Boolean, nullable=False)
+  new_release = db.Column(db.Boolean, nullable=False)
+
+  def __repr__(self):
+    return f'Tags: {self.id}: {self.genre}, {self.best_seller}, {self.fiction}, {self.award_winner}, {self.new_release}'
+
 
 # class Book(db.Model, SerializerMixin):
 #   pass
