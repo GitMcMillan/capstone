@@ -15,17 +15,45 @@ const TagDisplay = () => {
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
             >
               <p className="text-lg font-bold">Genre: {item.genre}</p>
-              <p className="text-sm text-gray-600">
-                Best Seller: {item.best_seller ? "Yes" : "No"}
+              <p className="text-sm text-gray-600 flex items-center">
+                Best Seller:
+                <span className="ml-2">
+                  {item.best_seller ? (
+                    <span className="text-green-500 text-xl">✔</span>
+                  ) : (
+                    <span className="text-red-500 text-xl">✘</span>
+                  )}
+                </span>
               </p>
-              <p className="text-sm text-gray-600">
-                Fiction: {item.fiction ? "Yes" : "No"}
+              <p className="text-sm text-gray-600 flex items-center">
+                Fiction:
+                <span className="ml-2">
+                  {item.fiction ? (
+                    <span className="text-green-500 text-xl">✔</span>
+                  ) : (
+                    <span className="text-red-500 text-xl">✘</span>
+                  )}
+                </span>
               </p>
-              <p className="text-sm text-gray-600">
-                Awards: {item.award_winner ? "Yes" : "No"}
+              <p className="text-sm text-gray-600 flex items-center">
+                Awards:
+                <span className="ml-2">
+                  {item.award_winner ? (
+                    <span className="text-green-500 text-xl">✔</span>
+                  ) : (
+                    <span className="text-red-500 text-xl">✘</span>
+                  )}
+                </span>
               </p>
-              <p className="text-sm text-gray-600">
-                New Release: {item.new_release ? "Yes" : "No"}
+              <p className="text-sm text-gray-600 flex items-center">
+                New Release:
+                <span className="ml-2">
+                  {item.new_release ? (
+                    <span className="text-green-500 text-xl">✔</span>
+                  ) : (
+                    <span className="text-red-500 text-xl">✘</span>
+                  )}
+                </span>
               </p>
             </li>
           ))
