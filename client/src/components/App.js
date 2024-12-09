@@ -10,8 +10,6 @@ import { BookProvider } from "./Helper/BookContext";
 function App() {
   //set state values
 
-  // const [bookData, setBookData] = useState([]);
-
   //useeffect fetch call
   //fetch to address
   //then convert to json

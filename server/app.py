@@ -45,6 +45,14 @@ class Books(Resource):
     
 api.add_resource(Books, '/books')
 
+class Tags(Resource):
+    def get(self):
+        tags = Tag.query.all()
+
+        return [tag.to_dict() for tag in tags], 200
+    
+api.add_resource(Tags, '/tags')
+
 
 
 

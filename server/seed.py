@@ -19,14 +19,14 @@ if __name__ == '__main__':
         #clear data
         db.session.query(User).delete()
         db.session.query(Book).delete()
-        # db.session.query(Tag).delete()
+        db.session.query(Tag).delete()
         # db.session.query(Library).delete()
 
         #seed users 
         
         #variable = Model(attr)
         #in _ range(number of instances)
-        user = [
+        users = [
             User(
             username=fake.name(),
             email=fake.email()
@@ -35,12 +35,12 @@ if __name__ == '__main__':
         ]
 
         #add and commit
-        db.session.add_all(user)
+        db.session.add_all(users)
         db.session.commit()
 
         #variable = Model(attr)
         #in _ range(number of instances)
-        book = [
+        books = [
             Book(
             title=fake.sentence(nb_words=randint(2, 7)),
             author= fake.name(),
@@ -48,7 +48,27 @@ if __name__ == '__main__':
         )
         for _ in range (100)
         ]
-        db.session.add_all(book)
+        db.session.add_all(books)
+        db.session.commit()
+
+        #variable = [
+        # Model(
+        # attr,
+        # (attr),
+        # (etc),)]
+        #in _ range(number of instances)
+        genres = ['Sci-Fi', 'Horror', 'Mystery', 'Romance', 'Adventure', 'Historical', 'Technical', 'Educational']
+
+        tags = [
+            Tag(
+                genre=rc(genres), 
+                best_seller=rc([True, False]),
+                fiction=rc([True, False]),
+                award_winner=rc([True, False]),
+                new_release=rc([True, False]))
+                for _ in range (100)
+                ]
+        db.session.add_all(tags)
         db.session.commit()
 
 
