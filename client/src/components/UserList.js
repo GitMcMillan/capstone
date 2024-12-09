@@ -19,7 +19,7 @@ const UserDisplay = () => {
             </li>
           ))
         ) : (
-          <p>No test data available</p>
+          <p>data not showing</p>
         )}
       </ul>
     </div>
