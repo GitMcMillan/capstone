@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserCard = ({ user }) => {
+const UserDisplay = ({ user }) => {
   return (
     <li className="bg-gray-100 shadow-md rounded-md p-4 mb-4">
       <p className="text-lg font-bold">Username: {user.username}</p>
@@ -9,4 +9,4 @@ const UserCard = ({ user }) => {
   );
 };
 
-export default UserCard;
+export default UserDisplay;

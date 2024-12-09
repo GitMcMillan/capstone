@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import NavBar from "./NavBar";
-import UserCard from "./UserCard";
-import BookCard from "./BookCard";
+import UserDisplay from "./UserDisplay";
+import BookCard from "./BookDisplay";
 
 function App() {
   //set state values
@@ -42,7 +42,9 @@ function App() {
         <h1>User Data</h1>
         <ul>
           {userData.length > 0 ? (
-            userData.map((item, index) => <UserCard key={index} user={item} />)
+            userData.map((item, index) => (
+              <UserDisplay key={index} user={item} />
+            ))
           ) : (
             <p>No test data available</p>
           )}
