@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Book, Tag
+from models import db, User, Book, Tag, Library
 
 if __name__ == '__main__':
     fake = Faker()
@@ -20,7 +20,7 @@ if __name__ == '__main__':
         db.session.query(User).delete()
         db.session.query(Book).delete()
         db.session.query(Tag).delete()
-        # db.session.query(Library).delete()
+        db.session.query(Library).delete()
 
         #seed users 
         
@@ -69,6 +69,17 @@ if __name__ == '__main__':
                 for _ in range (100)
                 ]
         db.session.add_all(tags)
+        db.session.commit()
+
+        libraries = [
+            Library(
+            user_id=user.id,
+            book_id=rc([book.id for book in books])  
+            )
+            for user in users for _ in range(5)  
+            ]
+        
+        db.session.add_all(libraries)
         db.session.commit()
 
 
