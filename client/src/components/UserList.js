@@ -9,9 +9,9 @@ const UserDisplay = () => {
       <h1>User Data</h1>
       <ul>
         {userData.length > 0 ? (
-          userData.map((item, index) => (
+          userData.map((item) => (
             <li
-              key={index}
+              key={item.id}
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
             >
               <p className="text-lg font-bold">Username: {item.username}</p>

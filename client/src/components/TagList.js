@@ -9,9 +9,9 @@ const TagDisplay = () => {
       <h1>Categories</h1>
       <ul>
         {tagData.length > 0 ? (
-          tagData.map((item, index) => (
+          tagData.map((item) => (
             <li
-              key={index}
+              key={item.id}
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
             >
               <p className="text-lg font-bold">Genre: {item.genre}</p>
