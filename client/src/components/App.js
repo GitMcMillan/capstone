@@ -4,10 +4,12 @@ import NavBar from "./NavBar";
 import UserDisplay from "./UserList";
 import BookDisplay from "./BookList";
 import TagDisplay from "./TagList";
+import LibraryDisplay from "./LibraryList";
 import Home from "./Home";
 import { UserProvider } from "./Helper/Context";
 import { BookProvider } from "./Helper/BookContext";
 import { TagProvider } from "./Helper/TagContext";
+import { LibraryProvider } from "./Helper/LibraryContext";
 
 function App() {
   //set state values
@@ -22,20 +24,24 @@ function App() {
     <UserProvider>
       <BookProvider>
         <TagProvider>
-          <Router>
-            <NavBar />
-            <nav>
-              <Link to="/">Home</Link> | <Link to="/users">User Data</Link> |
-              <Link to="/books">Book Data</Link> |
-              <Link to="/tags">Category Data</Link>
-            </nav>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/users" component={UserDisplay} />
-              <Route path="/books" component={BookDisplay} />
-              <Route path="/tags" component={TagDisplay} />
-            </Switch>
-          </Router>
+          <LibraryProvider>
+            <Router>
+              <NavBar />
+              <nav>
+                <Link to="/">Home</Link> | <Link to="/users">User Data</Link> |
+                <Link to="/books">Book Data</Link> |
+                <Link to="/tags">Category Data</Link> |
+                <Link to="/libraries">Library Data</Link>
+              </nav>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path="/users" component={UserDisplay} />
+                <Route path="/books" component={BookDisplay} />
+                <Route path="/tags" component={TagDisplay} />
+                <Route path="/libraries" component={LibraryDisplay} />
+              </Switch>
+            </Router>
+          </LibraryProvider>
         </TagProvider>
       </BookProvider>
     </UserProvider>
