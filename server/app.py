@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, jsonify, make_response, request
+from flask import request, jsonify, make_response, request, session
 from extensions import bcrypt
 from flask_restful import Resource
 
@@ -12,7 +12,6 @@ from config import app, db, api
 # Add your model imports
 from models import User, Tag, Book, Library
 
-from flask_cors import CORS
 
 bcrypt.init_app(app)
 
@@ -59,18 +58,44 @@ class Libraries(Resource):
     
 api.add_resource(Libraries, '/libraries')
 
+app.secret_key = 'password'
 class Login(Resource):
     def post(self):
         data = request.get_json()
-        user = User.query.filter_by(username=data.get('username')).first()
+        username= data.get('username')
+        password = data.get('password')
 
-        if user and user.authenticate(data.get('password')):
-            return {'message': 'Login successful', 'user': user.to_dict()}, 200
+        user = User.query.filter_by(username=username).first()
 
-        return {'error': 'Invalid username or password'}, 401
-
-
+        if user and user.authenticate(password):
+            session['user_id'] = user.id
+            return user.to_dict(), 200
+        
+        return {'error' : 'Invalid username or password'}, 401
+    
 api.add_resource(Login, '/login')
+
+class Logout(Resource):
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.get(user_id)
+            if user:
+                return user.to_dict(), 200
+        return {}, 204
+        
+api.add_resource(Logout, '/logout')
+
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.get(user_id)
+            if user:
+                return user.to_dict(), 200
+        return {}, 201
+    
+api.add_resource(CheckSession, '/check_session')
 
 
 
