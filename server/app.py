@@ -4,13 +4,19 @@
 
 # Remote library imports
 from flask import request, jsonify, make_response, request
+from extensions import bcrypt
 from flask_restful import Resource
 
 # Local imports
 from config import app, db, api
 # Add your model imports
 from models import User, Tag, Book, Library
+
 from flask_cors import CORS
+
+bcrypt.init_app(app)
+
+
 
 
 # Views go here!
@@ -52,6 +58,19 @@ class Libraries(Resource):
         return [library.to_dict() for library in libraries], 200
     
 api.add_resource(Libraries, '/libraries')
+
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+        user = User.query.filter_by(username=data.get('username')).first()
+
+        if user and user.authenticate(data.get('password')):
+            return {'message': 'Login successful', 'user': user.to_dict()}, 200
+
+        return {'error': 'Invalid username or password'}, 401
+
+
+api.add_resource(Login, '/login')
 
 
 

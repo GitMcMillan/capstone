@@ -13,15 +13,15 @@ function NavBar() {
       <Link to="/" style={{ margin: "0 10px" }}>
         Home
       </Link>
-      {/* <Link to="/books" style={{ margin: "0 10px" }}>
+      <Link to="/books" style={{ margin: "0 10px" }}>
         Book Info
       </Link>
       <Link to="/tags" style={{ margin: "0 10px" }}>
         Tag Info
       </Link>
-      <Link to="/library" style={{ margin: "0 10px" }}>
+      <Link to="/libraries" style={{ margin: "0 10px" }}>
         Library
-      </Link> */}
+      </Link>
     </nav>
   );
 }

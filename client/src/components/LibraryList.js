@@ -7,30 +7,40 @@ const LibraryDisplay = () => {
   const { libraryData } = useContext(LibraryContext);
   const { userData } = useContext(UserContext);
   const { bookData } = useContext(BookContext);
-  console.log(libraryData);
-  console.log(userData);
-  console.log(bookData);
 
   return (
     <div>
       <h1>Library Data</h1>
       <ul>
-        {libraryData.length > 0 ? (
-          libraryData.map((item) => {
-            const user = userData.find((user) => user.id === item.user_id);
-            const book = bookData.find((book) => book.id === item.book_id);
+        {userData.length > 0 ? (
+          userData.map((user) => {
+            // find all books for the current user
+            // filter by relationship id === user id
+            //map by book id === item book_id relationship
+            const user_books = libraryData
+              .filter((item) => item.user_id === user.id)
+              .map((item) => bookData.find((book) => book.id === item.book_id));
 
             return (
               <li
-                key={item.id}
+                key={user.id}
                 className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
               >
                 <p className="text-lg font-bold">
-                  User: {user?.username || "Unknown User"}
+                  User: {user.username || "Unknown User"}
                 </p>
-                <p className="text-sm text-gray-600">
-                  Book: {book?.title || "Unknown Book"}
-                </p>
+                <ul className="pl-4">
+                  {user_books.length > 0 ? (
+                    //map user_books and produce the li
+                    user_books.map((book) => (
+                      <li key={book.id} className="text-sm text-gray-600">
+                        {book.title}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-sm text-gray-600">No Books</li>
+                  )}
+                </ul>
               </li>
             );
           })
