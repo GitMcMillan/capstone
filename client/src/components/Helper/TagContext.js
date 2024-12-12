@@ -11,7 +11,6 @@ export const TagProvider = ({ children }) => {
       .then((data) => setTagData(data))
       .catch((error) => console.error("Error:", error));
   }, []);
-  console.log(tagData);
 
   return (
     <TagContext.Provider value={{ tagData, setTagData }}>

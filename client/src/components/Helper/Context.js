@@ -11,10 +11,20 @@ export const UserProvider = ({ children }) => {
       .then((data) => setUserData(data))
       .catch((error) => console.error("Error:", error));
   }, []);
-  console.log(userData);
+
+  function logInUser(loginData) {
+    fetch("/login", {
+      method: "POST",
+      headers: {
+        Content_Type: "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(loginData),
+    });
+  }
 
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <UserContext.Provider value={{ userData, setUserData, logInUser }}>
       {children}
     </UserContext.Provider>
   );

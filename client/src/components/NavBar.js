@@ -10,6 +10,9 @@ function NavBar() {
         borderBottom: "1px solid #ccc",
       }}
     >
+      <Link to="/login" style={{ margin: "0 10px" }}>
+        LogIn
+      </Link>
       <Link to="/" style={{ margin: "0 10px" }}>
         Home
       </Link>

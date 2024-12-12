@@ -11,7 +11,6 @@ export const LibraryProvider = ({ children }) => {
       .then((data) => setLibraryData(data))
       .catch((error) => console.error("Error:", error));
   }, []);
-  console.log(libraryData);
 
   return (
     <LibraryContext.Provider value={{ libraryData, setLibraryData }}>

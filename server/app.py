@@ -5,15 +5,17 @@
 # Remote library imports
 from flask import request, jsonify, make_response, request, session
 from extensions import bcrypt
+import ipdb
 from flask_restful import Resource
+from flask_bcrypt import Bcrypt
 
 # Local imports
 from config import app, db, api
 # Add your model imports
 from models import User, Tag, Book, Library
 
-
-bcrypt.init_app(app)
+# bcrypt = Bcrypt(app)
+# bcrypt.init_app(app)
 
 
 
@@ -58,23 +60,29 @@ class Libraries(Resource):
     
 api.add_resource(Libraries, '/libraries')
 
+#delete me
 app.secret_key = 'password'
 class Login(Resource):
     def post(self):
-        data = request.get_json()
-        username= data.get('username')
-        password = data.get('password')
-
-        user = User.query.filter_by(username=username).first()
-
-        if user and user.authenticate(password):
-            session['user_id'] = user.id
-            return user.to_dict(), 200
-        
-        return {'error' : 'Invalid username or password'}, 401
+        try:
+            data = request.json
+            # Check for username or email
+            user = User.query.filter(
+                (User.username == data.get('username', "")) |
+                (User.email == data.get('email', ""))
+            ).first()
+            if user and user.authenticate(data.get("password", "")):
+                session['user_id'] = user.id
+                return make_response({'message': f'Welcome Back, {user.username}'}, 200)
+            else:
+                return make_response({'error': 'Invalid credentials'}, 401)
+        except Exception as e:
+            return {'error': str(e)}, 400
     
 api.add_resource(Login, '/login')
 
+
+import ipdb
 class Logout(Resource):
     def get(self):
         user_id = session.get('user_id')

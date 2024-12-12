@@ -3,6 +3,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
 from config import db
 from extensions import bcrypt
+from config import flask_bcrypt
 
 # Models go here!
 
@@ -12,23 +13,28 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
-    _password_hash = db.Column(db.String, nullable=True)
+    # _password_hash = db.Column(db.String, nullable=True)
+    _password_hash = db.Column("password_hash", db.String)
 
     @hybrid_property
-    def password_hash(self):
-      return self._password_hash
+    def password(self):
+        raise AttributeError('Passwords are private, set-only')
 
-    @password_hash.setter
-    def password_hash(self, password):
-        hashed = bcrypt.generate_password_hash(password.encode('utf-8'))
-        self._password_hash = hashed.decode('utf-8')
+    @password.setter
+    def password(self, password_to_validate):
+        if not isinstance(password_to_validate, str):
+            raise TypeError('Password must be a string')
+        if len(password_to_validate) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        hashed_password = flask_bcrypt.generate_password_hash(password_to_validate).decode("utf-8")
+        self._password_hash = hashed_password
 
-    def authenticate(self, password):
-        return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
+    def authenticate(self, password_to_check):
+        return flask_bcrypt.check_password_hash(self._password_hash, password_to_check)
 
     libraries = db.relationship('Library', back_populates='user')
 
-    serialize_rules = ('-libraries',)
+    serialize_rules = ('-libraries', '-password_hash')
 
     def __repr__(self):
         return f'User {self.id}: {self.username}, {self.email}'

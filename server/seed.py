@@ -28,11 +28,9 @@ if __name__ == '__main__':
         #in _ range(number of instances)
         users = [
             User(
-            username=fake.name(),
-            email=fake.email()
-        )
-        for _ in range (10)
-        ]
+            username='Bob',
+            email='bob@bob.bob'
+        )]
 
         #add and commit
         db.session.add_all(users)
