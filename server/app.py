@@ -12,7 +12,7 @@ from flask_bcrypt import Bcrypt
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import User, Tag, Book, Library
+from models import User, Author, Book, Bookstore
 
 # bcrypt = Bcrypt(app)
 # bcrypt.init_app(app)
@@ -36,13 +36,21 @@ class Users(Resource):
     
 api.add_resource(Users, '/users')
 
-class Tags(Resource):
+class Authors(Resource):
     def get(self):
-        tags = Tag.query.all()
+        Authors = Author.query.all()
 
-        return [tag.to_dict() for tag in tags], 200
+        return [author.to_dict() for author in Authors], 200
     
-api.add_resource(Tags, '/tags')
+api.add_resource(Authors, '/authors')
+
+class Bookstores(Resource):
+    def get(self):
+        bookstores = Bookstore.query.all()
+
+        return [book.to_dict() for book in bookstores], 200
+    
+api.add_resource(Bookstores, '/bookstores')
 
 class Books(Resource):
     def get(self):
@@ -51,14 +59,6 @@ class Books(Resource):
         return [book.to_dict() for book in books], 200
     
 api.add_resource(Books, '/books')
-
-class Libraries(Resource):
-    def get(self):
-        libraries = Library.query.all()
-
-        return [library.to_dict() for library in libraries], 200
-    
-api.add_resource(Libraries, '/libraries')
 
 #delete me
 app.secret_key = 'password'
