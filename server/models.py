@@ -46,10 +46,10 @@ class Bookstore(db.Model, SerializerMixin):
     address = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.Integer, nullable=False)
     
+    # breakpoint()
+    books = db.relationship('Book', back_populates='bookstore')
 
-    books = db.relationship('Book', back_populates='bookstores')
-
-    serialize_rules = ('-books')
+    serialize_rules = ('-books',)
 
     def __repr__(self):
         return f'Bookstores: {self.id}: {self.name}, {self.address}, {self.phone_number}'
@@ -66,7 +66,7 @@ class Author(db.Model, SerializerMixin):
     books = db.relationship('Book', back_populates='author')
     
 
-    serialize_rules = ('-books')
+    serialize_rules = ('-books',)
 
     def __repr__(self):
         return f'Author: {self.id}:{self.name}'
@@ -76,6 +76,7 @@ class Book(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
+    genre = db.Column(db.String, nullable=False)
     page_number = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     bookstore_id = db.Column(db.Integer, db.ForeignKey('bookstores.id'))
@@ -85,7 +86,7 @@ class Book(db.Model, SerializerMixin):
     author = db.relationship('Author', back_populates='books')
     bookstore = db.relationship('Bookstore', back_populates='books')
 
-    serialize_rules = ('-user.books', '-bookstore.books', 'author.books')
+    serialize_rules = ('-user.books', '-bookstore.books', '-author.books')
 
     def __repr__(self):
         return f'Book {self.id}: User: {self.user_id}, Bookstore: {self.bookstore_id}, Author: {self.author_id}'

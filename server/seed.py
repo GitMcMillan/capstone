@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Book, Tag, Library
+from models import db, User, Book, Author, Bookstore
 
 if __name__ == '__main__':
     fake = Faker()
@@ -18,9 +18,9 @@ if __name__ == '__main__':
 
         #clear data
         db.session.query(User).delete()
+        db.session.query(Author).delete()
+        db.session.query(Bookstore).delete()
         db.session.query(Book).delete()
-        db.session.query(Tag).delete()
-        db.session.query(Library).delete()
 
         #seed users 
         
@@ -36,13 +36,40 @@ if __name__ == '__main__':
         db.session.add_all(users)
         db.session.commit()
 
+        single_user = users[0]
+
+        authors = [
+            Author(
+                name=fake.name(), 
+                )
+                for _ in range (20)
+                ]
+        db.session.add_all(authors)
+        db.session.commit()
+
+        bookstores = [
+            Bookstore(
+            name=fake.company(),
+            address=fake.address(),
+            phone_number=fake.phone_number()  
+            )
+            for _ in range(10) 
+            ]
+        
+        db.session.add_all(bookstores)
+        db.session.commit()
+
+        genres = ['Sci-Fi', 'Horror', 'Mystery', 'Romance', 'Adventure', 'Historical', 'Technical', 'Educational']
         #variable = Model(attr)
         #in _ range(number of instances)
         books = [
             Book(
             title=fake.sentence(nb_words=randint(2, 7)),
-            author= fake.name(),
-            page_number=fake.random_int(min=50, max=1000) 
+            page_number=fake.random_int(min=50, max=1000), 
+            author_id=rc([author.id for author in authors]),
+            user_id=single_user.id,
+            bookstore_id=rc([bookstore.id for bookstore in bookstores]),
+            genre=rc(genres)
         )
         for _ in range (100)
         ]
@@ -55,30 +82,11 @@ if __name__ == '__main__':
         # (attr),
         # (etc),)]
         #in _ range(number of instances)
-        genres = ['Sci-Fi', 'Horror', 'Mystery', 'Romance', 'Adventure', 'Historical', 'Technical', 'Educational']
-
-        tags = [
-            Tag(
-                genre=rc(genres), 
-                best_seller=rc([True, False]),
-                fiction=rc([True, False]),
-                award_winner=rc([True, False]),
-                new_release=rc([True, False]))
-                for _ in range (100)
-                ]
-        db.session.add_all(tags)
-        db.session.commit()
-
-        libraries = [
-            Library(
-            user_id=user.id,
-            book_id=rc([book.id for book in books])  
-            )
-            for user in users for _ in range(5)  
-            ]
         
-        db.session.add_all(libraries)
-        db.session.commit()
+
+        
+
+        
 
 
 

@@ -38,9 +38,9 @@ api.add_resource(Users, '/users')
 
 class Authors(Resource):
     def get(self):
-        Authors = Author.query.all()
+        authors = Author.query.all()
 
-        return [author.to_dict() for author in Authors], 200
+        return [author.to_dict() for author in authors], 200
     
 api.add_resource(Authors, '/authors')
 
@@ -48,7 +48,7 @@ class Bookstores(Resource):
     def get(self):
         bookstores = Bookstore.query.all()
 
-        return [book.to_dict() for book in bookstores], 200
+        return [bookstore.to_dict() for bookstore in bookstores], 200
     
 api.add_resource(Bookstores, '/bookstores')
 
