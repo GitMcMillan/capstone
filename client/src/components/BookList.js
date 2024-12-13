@@ -15,8 +15,15 @@ const BookDisplay = () => {
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
             >
               <p className="text-lg font-bold">Title: {item.title}</p>
-              <p className="text-sm text-gray-600">Author: {item.author}</p>
+              <p className="text-sm text-gray-600">
+                Author: {item.author?.name}
+              </p>
+
+              <p className="text-sm text-gray-600">genre: {item.genre}</p>
               <p className="text-sm text-gray-600">Pages: {item.page_number}</p>
+              <p className="text-sm text-gray-600">
+                BookStore: {item.bookstore?.name}
+              </p>
             </li>
           ))
         ) : (
@@ -28,3 +35,9 @@ const BookDisplay = () => {
 };
 
 export default BookDisplay;
+// title;
+// genre;
+// page_number;
+// user_id;
+// bookstore_id;
+// author_id;

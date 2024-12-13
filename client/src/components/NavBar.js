@@ -16,14 +16,17 @@ function NavBar() {
       <Link to="/" style={{ margin: "0 10px" }}>
         Home
       </Link>
+      <Link to="/users" style={{ margin: "0 10px" }}>
+        User Info
+      </Link>
       <Link to="/books" style={{ margin: "0 10px" }}>
         Book Info
       </Link>
-      <Link to="/tags" style={{ margin: "0 10px" }}>
-        Tag Info
+      <Link to="/authors" style={{ margin: "0 10px" }}>
+        Authors
       </Link>
-      <Link to="/libraries" style={{ margin: "0 10px" }}>
-        Library
+      <Link to="/bookstores" style={{ margin: "0 10px" }}>
+        Book Stores
       </Link>
     </nav>
   );

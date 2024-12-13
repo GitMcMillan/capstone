@@ -11,6 +11,7 @@ export const BookProvider = ({ children }) => {
       .then((data) => setBookData(data))
       .catch((error) => console.error("Error:", error));
   }, []);
+  console.log(bookData);
 
   return (
     <BookContext.Provider value={{ bookData, setBookData }}>
