@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { BookContext } from "./Helper/BookContext";
+import { Link } from "react-router-dom";
 
 const BookDisplay = () => {
   const { bookData } = useContext(BookContext);
@@ -14,20 +15,26 @@ const BookDisplay = () => {
               key={item.id}
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
             >
-              <p className="text-lg font-bold">Title: {item.title}</p>
-              <p className="text-sm text-gray-600">
-                Author: {item.author?.name}
-              </p>
-
-              <p className="text-sm text-gray-600">genre: {item.genre}</p>
-              <p className="text-sm text-gray-600">Pages: {item.page_number}</p>
-              <p className="text-sm text-gray-600">
-                BookStore: {item.bookstore?.name}
-              </p>
+              <Link
+                to={`/books/${item.id}`}
+                className="text-blue-500 hover:underline"
+              >
+                <p className="text-lg font-bold">Title: {item.title}</p>
+                <p className="text-sm text-gray-600">
+                  Author: {item.author?.name || "Unknown"}
+                </p>
+                <p className="text-sm text-gray-600">Genre: {item.genre}</p>
+                <p className="text-sm text-gray-600">
+                  Pages: {item.page_number}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Bookstore: {item.bookstore?.name || "Unknown"}
+                </p>
+              </Link>
             </li>
           ))
         ) : (
-          <p>data not showing</p>
+          <p>Data not showing</p>
         )}
       </ul>
     </div>
@@ -35,9 +42,3 @@ const BookDisplay = () => {
 };
 
 export default BookDisplay;
-// title;
-// genre;
-// page_number;
-// user_id;
-// bookstore_id;
-// author_id;

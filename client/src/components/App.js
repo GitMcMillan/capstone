@@ -5,6 +5,8 @@ import UserDisplay from "./UserList";
 import BookDisplay from "./BookList";
 import BookstoreDisplay from "./BookstoreList";
 import AuthorDisplay from "./AuthorList";
+import SingleBook from "./SingleBook";
+import SingleAuthor from "./SingleAuthor";
 import LoginForm from "./LoginForm";
 import { UserProvider } from "./Helper/Context";
 import { BookProvider } from "./Helper/BookContext";
@@ -30,8 +32,10 @@ function App() {
               <Switch>
                 <Route exact path="/login" component={LoginForm} />
                 <Route path="/users" component={UserDisplay} />
+                <Route path="/books/:id" component={SingleBook} />
                 <Route path="/books" component={BookDisplay} />
                 <Route path="/bookstores" component={BookstoreDisplay} />
+                <Route path="/authors/:id" component={SingleAuthor} />
                 <Route path="/authors" component={AuthorDisplay} />
               </Switch>
             </Router>

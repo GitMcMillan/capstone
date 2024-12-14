@@ -44,6 +44,40 @@ class Authors(Resource):
     
 api.add_resource(Authors, '/authors')
 
+class AuthorByID(Resource):
+    def get(self, id):
+        author = Author.query.get(id)
+        if not author:
+            return {"error": "Author not found"}, 404
+        
+        
+        return {
+            "id": author.id,
+            "name": author.name,
+            "books": [
+                {
+                    "id": book.id,
+                    "title": book.title,
+                    "genre": book.genre,
+                    "page_number": book.page_number,
+                    "bookstore": {
+                        "id": book.bookstore.id,
+                        "name": book.bookstore.name,
+                        "address": book.bookstore.address,
+                        "phone_number": book.bookstore.phone_number,
+                    } if book.bookstore else None,
+                    "user": {
+                        "id": book.user.id,
+                        "username": book.user.username,
+                        "email": book.user.email,
+                    } if book.user else None,
+                }
+                for book in author.books
+            ],
+        }, 200
+
+api.add_resource(AuthorByID, '/authors/<int:id>')
+
 class Bookstores(Resource):
     def get(self):
         bookstores = Bookstore.query.all()
@@ -59,6 +93,15 @@ class Books(Resource):
         return [book.to_dict() for book in books], 200
     
 api.add_resource(Books, '/books')
+
+class BookByID(Resource):
+    def get(self, id):
+        book = Book.query.get(id)
+        if not book:
+            return {"error": "Book not found"}, 404
+        return book.to_dict(), 200
+
+api.add_resource(BookByID, '/books/<int:id>')
 
 #delete me
 app.secret_key = 'password'

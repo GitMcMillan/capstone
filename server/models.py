@@ -94,7 +94,7 @@ class Author(db.Model, SerializerMixin):
         return value
     
 
-    serialize_rules = ('-books',)
+    serialize_rules = ('-books.author', '-bookstores', '-users')
 
     def __repr__(self):
         return f'Author: {self.id}:{self.name}'
