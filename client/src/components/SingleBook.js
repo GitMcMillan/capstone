@@ -9,10 +9,10 @@ const SingleBook = () => {
   // console.log("Book details:", bookById);
   // console.log("Fetched ID:", id);
 
-  const [genre, setGenre] = useState([]);
-  const [pages, setPages] = useState([]);
-  const [bookstore, setBooktore] = useState([]);
-  const [author, setAuthor] = useState([]);
+  const [genre, setGenre] = useState("");
+  const [pages, setPages] = useState("");
+  const [bookstore, setBooktore] = useState("");
+  const [author, setAuthor] = useState("");
 
   useEffect(() => {
     if (bookById === null) {
