@@ -13,13 +13,6 @@ export const AuthorProvider = ({ children }) => {
       .catch((error) => console.error("Error:", error));
   }, []);
 
-  // const fetchAuthorById = (id) => {
-  //   fetch(`http://127.0.0.1:5555/authors/${id}`)
-  //     .then((r) => r.json())
-  //     .then((author) => setAuthorById(author))
-  //     .catch((error) => console.error("Error:", error));
-  // };
-
   const fetchAuthorById = (id) => {
     const authorid = authorData.find((author) => author.id === parseInt(id));
     if (authorid) {

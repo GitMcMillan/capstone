@@ -17,12 +17,16 @@ const SingleBook = () => {
   }
 
   return (
-    <div>
-      <h1>{bookById.title}</h1>
-      <p>Genre: {bookById.genre}</p>
-      <p>Pages: {bookById.page_number}</p>
-      <p>Author: {bookById.author?.name || "Unknown Author"}</p>
-      <p>Bookstore: {bookById.bookstore?.name || "Unknown Bookstore"}</p>
+    <div className="bg-gray-100 shadow-md rounded-md p-4 mb-4">
+      <h1 className="text-lg font-bold">{bookById.title}</h1>
+      <p className="text-sm text-gray-600">Genre: {bookById.genre}</p>
+      <p className="text-sm text-gray-600">Pages: {bookById.page_number}</p>
+      <p className="text-sm text-gray-600">
+        Author: {bookById.author?.name || "Unknown Author"}
+      </p>
+      <p className="text-sm text-gray-600">
+        Bookstore: {bookById.bookstore?.name || "Unknown Bookstore"}
+      </p>
     </div>
   );
 };
