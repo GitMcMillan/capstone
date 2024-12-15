@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 
 const SingleBook = () => {
   const { id } = useParams();
-  const { fetchBookById, bookById } = useContext(BookContext);
-  console.log("Book details:", bookById);
-  console.log("Fetched ID:", id);
+  const { fetchBookById, bookById, handleDelete, message, setMessage } =
+    useContext(BookContext);
+  // console.log("Book details:", bookById);
+  // console.log("Fetched ID:", id);
 
   const [genre, setGenre] = useState([]);
   const [pages, setPages] = useState([]);
@@ -14,8 +15,16 @@ const SingleBook = () => {
   const [author, setAuthor] = useState([]);
 
   useEffect(() => {
-    fetchBookById(parseInt(id));
-  }, [id, fetchBookById]);
+    if (bookById === null) {
+      setMessage("Book has been deleted.");
+      return;
+    }
+    fetchBookById(id);
+  }, [id, fetchBookById, bookById, setMessage]);
+
+  if (message) {
+    return <p>{message}</p>;
+  }
 
   if (!bookById) {
     return <p>Loading book details...</p>;
@@ -52,6 +61,7 @@ const SingleBook = () => {
       <p className="text-sm text-gray-600">
         Bookstore: {bookById.bookstore?.name || "Unknown Bookstore"}
       </p>
+      {message && <p>{message}</p>}
       <form>
         <input
           type="text"
@@ -77,6 +87,9 @@ const SingleBook = () => {
           value={bookstore}
           onChange={handleBookstoreChange}
         />
+        <button type="button" onClick={() => handleDelete(id)}>
+          Delete Book
+        </button>
       </form>
     </div>
   );

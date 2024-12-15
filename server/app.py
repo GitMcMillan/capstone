@@ -6,14 +6,18 @@
 from flask import request, jsonify, make_response, request, session
 from extensions import bcrypt
 import ipdb
+
 from flask_restful import Resource
 from flask_bcrypt import Bcrypt
 
+
+
 # Local imports
 from config import app, db, api
+from flask_cors import CORS
 # Add your model imports
 from models import User, Author, Book, Bookstore
-
+CORS(app)
 # bcrypt = Bcrypt(app)
 # bcrypt.init_app(app)
 
