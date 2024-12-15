@@ -75,6 +75,32 @@ class AuthorByID(Resource):
                 for book in author.books
             ],
         }, 200
+    
+    def delete(self, id):
+        author = Author.query.get(id)
+
+        if not author:
+            return {"error": "Author not found"}, 404
+
+        db.session.dbdelete(author)
+        db.session.commit()
+
+        return "", 204
+
+    def patch(self, id):
+        data = request.get_json()
+        author = Author.query.get(id)
+        #title author genre pages bookstore
+
+        if 'name' in data:
+            author.name = data['name']
+        
+
+        db.session.commit()
+        return author.to_dict(), 200
+
+
+
 
 api.add_resource(AuthorByID, '/authors/<int:id>')
 
@@ -101,9 +127,39 @@ class BookByID(Resource):
             return {"error": "Book not found"}, 404
         return book.to_dict(), 200
 
-api.add_resource(BookByID, '/books/<int:id>')
 
-#delete me
+
+    def delete(self, id):
+        book = Book.query.get(id)
+
+        if not book:
+            return {"error": "Book not found"}, 404
+
+        db.session.delete(book)
+        db.session.commit()
+
+        return "", 204
+
+    def patch(self, id):
+        data = request.get_json()
+        book = Book.query.get(id)
+        #title author genre pages bookstore
+        if not book:
+            return {"error": "Book not found"}, 404
+
+        if 'title' in data:
+            book.title = data['title']
+        if 'genre' in data:
+            book.genre = data['genre']
+        if 'pages' in data:
+            book.pages = data['pages']
+        if 'bookstore' in data:
+            book.bookstore_id = data['bookstore']
+
+        db.session.commit()
+        return book.to_dict(), 200
+
+api.add_resource(BookByID, '/books/<int:id>')
 app.secret_key = 'password'
 class Login(Resource):
     def post(self):
