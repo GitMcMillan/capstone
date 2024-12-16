@@ -122,6 +122,43 @@ class Books(Resource):
 
         return [book.to_dict() for book in books], 200
     
+    def post(self):
+        author_name = request.json.get('author')
+        author = None
+
+        if author_name:
+            author = Author.query.filter_by(name=author_name).first()
+
+            if not author:
+                author = Author(name=author_name)
+                db.session.add(author)
+        
+        
+        
+        bookstore_name = request.json.get('bookstore')
+        bookstore = None
+
+        if bookstore_name:
+            bookstore = Bookstore.query.filter_by(name=bookstore_name).first()
+
+            if not bookstore:
+                bookstore = Bookstore(name=bookstore_name)
+                db.session.add(bookstore)
+
+
+        new_book = Book(
+            title=request.json.get('title'),
+            genre=request.json.get('genre'),
+            page_number=request.json.get('page_number'),
+            author=author,
+            bookstore=bookstore,
+            user_id=1
+        )
+
+        db.session.add(new_book)
+        db.session.commit()
+        return new_book.to_dict(), 201
+    
 api.add_resource(Books, '/books')
 
 class BookByID(Resource):
