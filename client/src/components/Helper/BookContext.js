@@ -14,6 +14,13 @@ export const BookProvider = ({ children }) => {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  const fetchBookData = () => {
+    fetch("http://127.0.0.1:5555/books")
+      .then((r) => r.json())
+      .then((data) => setBookData(data))
+      .catch((error) => console.error("Error:", error));
+  };
+
   const fetchBookById = (id) => {
     const bookid = bookData.find((book) => book.id === parseInt(id));
     if (bookid) {
@@ -45,12 +52,20 @@ export const BookProvider = ({ children }) => {
           console.log("Book successfully deleted.");
           setMessage("Book Deleted!");
           setBookById(null);
+          fetchBookData();
+          // Clear the message after 3 seconds
+          setTimeout(() => setMessage(""), 3000);
         } else {
           console.error("Failed to delete the book.");
           setMessage("Failed to delete the book.");
         }
       })
       .catch(() => setMessage("Error deleting the book."));
+  };
+
+  const resetMessage = () => {
+    console.log("Resetting message");
+    setMessage("");
   };
 
   return (
@@ -63,6 +78,8 @@ export const BookProvider = ({ children }) => {
         handleDelete,
         message,
         setMessage,
+        resetMessage,
+        fetchBookData,
       }}
     >
       {children}
