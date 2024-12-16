@@ -17,16 +17,20 @@ const SingleBook = () => {
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [pages, setPages] = useState("");
-  const [bookstore, setBooktore] = useState("");
   const [author, setAuthor] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     resetMessage();
     fetchBookById(id);
-
+    if (bookById) {
+      setTitle("");
+      setGenre("");
+      setPages(bookById.page_number || "");
+      setAuthor(bookById.author?.name || "");
+    }
     return () => resetMessage();
-  }, [id, fetchBookById, resetMessage]);
+  }, [id, fetchBookById, resetMessage, bookById]);
 
   const handleDeleteClick = () => {
     handleDelete(id);
@@ -38,31 +42,44 @@ const SingleBook = () => {
     }, 2000);
   };
 
-  if (!bookById) {
-    return <p>Loading book details...</p>;
-  }
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    const updatedBook = {
+      ...(title && { title }),
+      ...(genre && { genre }),
+      ...(pages !== "" && { page_number: parseInt(pages, 10) }),
+      ...(author && { author }),
+    };
 
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
-
-  const handleGenreChange = (e) => {
-    setGenre(e.target.value);
-  };
-
-  const handlePagesChange = (e) => {
-    setPages(e.target.value);
-  };
-
-  const handleAuthorChange = (e) => {
-    setAuthor(e.target.value);
-  };
-
-  const handleBookstoreChange = (e) => {
-    setBooktore(e.target.value);
+    fetch(`http://127.0.0.1:5555/books/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedBook),
+    })
+      .then((r) => {
+        if (r.ok) {
+          return r.json();
+        } else {
+          throw new Error("Failed to update the book");
+        }
+      })
+      .then((updatedBookData) => {
+        console.log("Updated Book:", updatedBookData);
+        fetchBookById(id);
+        fetchBookData();
+      })
+      .catch((error) => {
+        console.error("Error updating book:", error);
+      });
   };
 
   const closeModal = () => setShowModal(false);
+
+  if (!bookById) {
+    return <p>Loading book details...</p>;
+  }
 
   return (
     <div className="bg-gray-100 shadow-md rounded-md p-4 mb-4">
@@ -82,51 +99,59 @@ const SingleBook = () => {
           </div>
         </div>
       )}
-      <form>
+      <form onSubmit={handleEditSubmit}>
         <input
           type="text"
-          placeholder="title"
+          placeholder="Title"
           value={title}
-          onChange={handleTitleChange}
+          onChange={(e) => setTitle(e.target.value)}
+          className="block mb-2 p-2 border rounded"
         />
         <input
           type="text"
-          placeholder="genre"
+          placeholder="Genre"
           value={genre}
-          onChange={handleGenreChange}
+          onChange={(e) => setGenre(e.target.value)}
+          className="block mb-2 p-2 border rounded"
         />
         <input
-          type="text"
-          placeholder="pages"
+          type="number"
+          placeholder="Pages"
           value={pages}
-          onChange={handlePagesChange}
+          onChange={(e) => setPages(e.target.value)}
+          className="block mb-2 p-2 border rounded"
         />
         <input
           type="text"
-          placeholder="author"
+          placeholder="Author"
           value={author}
-          onChange={handleAuthorChange}
+          onChange={(e) => setAuthor(e.target.value)}
+          className="block mb-2 p-2 border rounded"
         />
-        <input
-          type="text"
-          placeholder="bookstore"
-          value={bookstore}
-          onChange={handleBookstoreChange}
-        />
-        <button type="button" onClick={handleDeleteClick}>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+        >
+          Save Changes
+        </button>
+        <button
+          type="button"
+          onClick={handleDeleteClick}
+          className="bg-red-500 text-white px-4 py-2 rounded mt-2 ml-2"
+        >
           Delete Book
         </button>
       </form>
 
-      {/* MOdal */}
+      {/* Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 items-center justify-center"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
           onClick={closeModal}
         >
           <div
             className="bg-white text-black p-6 rounded shadow-lg"
-            onClick={(e) => e.stopPropogation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <p className="text-lg font-bold">Book Deleted! </p>
           </div>

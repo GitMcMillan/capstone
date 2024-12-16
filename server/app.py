@@ -50,7 +50,7 @@ api.add_resource(Authors, '/authors')
 
 class AuthorByID(Resource):
     def get(self, id):
-        author = Author.query.get(id)
+        author = Author.query.filter_by(id=id).first()
         if not author:
             return {"error": "Author not found"}, 404
         
@@ -81,7 +81,7 @@ class AuthorByID(Resource):
         }, 200
     
     def delete(self, id):
-        author = Author.query.get(id)
+        author = Author.query.filter_by(id=id).first()
 
         if not author:
             return {"error": "Author not found"}, 404
@@ -93,7 +93,7 @@ class AuthorByID(Resource):
 
     def patch(self, id):
         data = request.get_json()
-        author = Author.query.get(id)
+        author = Author.query.filter_by(id=id).first()
         #title author genre pages bookstore
 
         if 'name' in data:
@@ -126,7 +126,7 @@ api.add_resource(Books, '/books')
 
 class BookByID(Resource):
     def get(self, id):
-        book = Book.query.get(id)
+        book = Book.query.filter_by(id=id).first()
         if not book:
             return {"error": "Book not found"}, 404
         return book.to_dict(), 200
@@ -134,7 +134,7 @@ class BookByID(Resource):
 
 
     def delete(self, id):
-        book = Book.query.get(id)
+        book = Book.query.filter_by(id=id).first()
 
         if not book:
             return {"error": "Book not found"}, 404
@@ -146,22 +146,39 @@ class BookByID(Resource):
 
     def patch(self, id):
         data = request.get_json()
-        book = Book.query.get(id)
-        #title author genre pages bookstore
+    
+        
+        book = Book.query.filter_by(id=id).first()
         if not book:
             return {"error": "Book not found"}, 404
 
+        
         if 'title' in data:
             book.title = data['title']
+
         if 'genre' in data:
             book.genre = data['genre']
-        if 'pages' in data:
-            book.pages = data['pages']
-        if 'bookstore' in data:
-            book.bookstore_id = data['bookstore']
 
+        if 'page_number' in data:
+            book.page_number = data['page_number']
+
+        
+        # if 'author' in data:
+        #     author_name = data['author'].strip()
+        # if not author_name:
+        #     return {"error": "Author name cannot be empty"}, 400
+        # author = Author.query.filter_by(name=author_name).first()
+        # if author:
+        #     book.author_id = author.id
+        # else:
+        #     return {"error": f"Author '{author_name}' not found"}, 404
+
+        
         db.session.commit()
+
+        
         return book.to_dict(), 200
+
 
 api.add_resource(BookByID, '/books/<int:id>')
 app.secret_key = 'password'

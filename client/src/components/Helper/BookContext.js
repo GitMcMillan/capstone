@@ -4,7 +4,7 @@ export const BookContext = createContext();
 
 export const BookProvider = ({ children }) => {
   const [bookData, setBookData] = useState([]);
-  const [bookById, setBookById] = useState([]);
+  const [bookById, setBookById] = useState("");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
