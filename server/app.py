@@ -162,16 +162,13 @@ class BookByID(Resource):
         if 'page_number' in data:
             book.page_number = data['page_number']
 
-        
-        # if 'author' in data:
-        #     author_name = data['author'].strip()
-        # if not author_name:
-        #     return {"error": "Author name cannot be empty"}, 400
-        # author = Author.query.filter_by(name=author_name).first()
-        # if author:
-        #     book.author_id = author.id
-        # else:
-        #     return {"error": f"Author '{author_name}' not found"}, 404
+        if 'author' in data:
+            new_author_name = data['author']
+            if book.author:
+                book.author.name = new_author_name
+            else:
+                return {'error': "No author for this book"}, 404
+
 
         
         db.session.commit()

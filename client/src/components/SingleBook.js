@@ -26,8 +26,8 @@ const SingleBook = () => {
     if (bookById) {
       setTitle("");
       setGenre("");
-      setPages(bookById.page_number || "");
-      setAuthor(bookById.author?.name || "");
+      setPages("");
+      setAuthor("");
     }
     return () => resetMessage();
   }, [id, fetchBookById, resetMessage, bookById]);
