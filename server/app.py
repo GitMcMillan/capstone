@@ -17,6 +17,7 @@ from config import app, db, api
 from flask_cors import CORS
 # Add your model imports
 from models import User, Author, Book, Bookstore
+
 CORS(app)
 # bcrypt = Bcrypt(app)
 # bcrypt.init_app(app)
@@ -123,36 +124,28 @@ class Books(Resource):
         return [book.to_dict() for book in books], 200
     
     def post(self):
-        author_name = request.json.get('author')
-        author = None
+        data = request.json
+        author_name = data.get('author')
+        bookstore_id = data.get('bookstore_id')  # Get bookstore_id directly
 
+        author = None
         if author_name:
             author = Author.query.filter_by(name=author_name).first()
-
             if not author:
                 author = Author(name=author_name)
                 db.session.add(author)
-        
-        
-        
-        bookstore_name = request.json.get('bookstore')
+
         bookstore = None
-
-        if bookstore_name:
-            bookstore = Bookstore.query.filter_by(name=bookstore_name).first()
-
-            if not bookstore:
-                bookstore = Bookstore(name=bookstore_name)
-                db.session.add(bookstore)
-
+        if bookstore_id:
+            bookstore = Bookstore.query.get(bookstore_id)  # Find bookstore by ID
 
         new_book = Book(
-            title=request.json.get('title'),
-            genre=request.json.get('genre'),
-            page_number=request.json.get('page_number'),
+            title=data.get('title'),
+            genre=data.get('genre'),
+            page_number=data.get('page_number'),
             author=author,
             bookstore=bookstore,
-            user_id=1
+            user_id=1  # Assuming a user_id for now
         )
 
         db.session.add(new_book)
@@ -220,7 +213,7 @@ class Login(Resource):
     def post(self):
         try:
             data = request.json
-            # Check for username or email
+            
             user = User.query.filter(
                 (User.username == data.get('username', "")) |
                 (User.email == data.get('email', ""))

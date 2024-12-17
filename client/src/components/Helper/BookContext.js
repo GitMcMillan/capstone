@@ -14,6 +14,19 @@ export const BookProvider = ({ children }) => {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  const handleAddBook = (newBook) => {
+    fetch("http://127.0.0.1:5555/books", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newBook),
+    })
+      .then((r) => r.json())
+      .then((newBook) => {
+        setBookData((prev) => [...prev, newBook]);
+      })
+      .catch((error) => console.error("Error adding book:", error));
+  };
+
   const fetchBookData = () => {
     fetch("http://127.0.0.1:5555/books")
       .then((r) => r.json())
@@ -80,6 +93,7 @@ export const BookProvider = ({ children }) => {
         setMessage,
         resetMessage,
         fetchBookData,
+        handleAddBook,
       }}
     >
       {children}
