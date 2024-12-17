@@ -126,8 +126,7 @@ class Books(Resource):
     def post(self):
         data = request.json
         author_name = data.get('author')
-        bookstore_id = data.get('bookstore_id')  # Get bookstore_id directly
-
+        bookstore_id = data.get('bookstore_id') 
         author = None
         if author_name:
             author = Author.query.filter_by(name=author_name).first()
@@ -137,7 +136,7 @@ class Books(Resource):
 
         bookstore = None
         if bookstore_id:
-            bookstore = Bookstore.query.get(bookstore_id)  # Find bookstore by ID
+            bookstore = Bookstore.query.get(bookstore_id)  
 
         new_book = Book(
             title=data.get('title'),
@@ -145,7 +144,7 @@ class Books(Resource):
             page_number=data.get('page_number'),
             author=author,
             bookstore=bookstore,
-            user_id=1  # Assuming a user_id for now
+            user_id=1  
         )
 
         db.session.add(new_book)
@@ -212,17 +211,16 @@ app.secret_key = 'password'
 class Login(Resource):
     def post(self):
         try:
+            #get data thru request context
             data = request.json
-            
-            user = User.query.filter(
-                (User.username == data.get('username', "")) |
-                (User.email == data.get('email', ""))
-            ).first()
-            if user and user.authenticate(data.get("password", "")):
-                session['user_id'] = user.id
-                return make_response({'message': f'Welcome Back, {user.username}'}, 200)
+            #chcek that you can find user by email AND password matches
+            user = User.query.filter_by(email=data.get('email', "")).first()
+            if user and user.authenticate(data.get("password","")):
+                session["user_id"] = user.id #how we log in
+                print("Session after login:", session)
+                return make_response(user.to_dict(), 200)
             else:
-                return make_response({'error': 'Invalid credentials'}, 401)
+                return make_response("Invalid Credentials", 401) 
         except Exception as e:
             return {'error': str(e)}, 400
     
@@ -231,21 +229,27 @@ api.add_resource(Login, '/login')
 
 import ipdb
 class Logout(Resource):
-    def get(self):
-        user_id = session.get('user_id')
-        if user_id:
-            user = User.query.get(user_id)
-            if user:
-                return user.to_dict(), 200
-        return {}, 204
+    def delete(self):
+        try:
+        
+            response = make_response({}, 204)
+
+            if "user_id" in session:
+                del session["user_id"]
+                response.delete_cookie("session")
+                return response
+        except Exception as e:
+            return {"Error": str(e)}, 422
         
 api.add_resource(Logout, '/logout')
 
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id')
+        print("User ID in session:", user_id)
         if user_id:
             user = User.query.get(user_id)
+            print("User found:", user)
             if user:
                 return user.to_dict(), 200
         return {}, 201
@@ -261,4 +265,3 @@ api.add_resource(CheckSession, '/check_session')
 
 if __name__ == '__main__':
         app.run(port=5555, debug=True)
-

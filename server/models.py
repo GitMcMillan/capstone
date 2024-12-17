@@ -31,15 +31,17 @@ class User(db.Model, SerializerMixin):
     def password(self, password_to_validate):
         if not isinstance(password_to_validate, str):
             raise TypeError('Password must be a string')
-        if len(password_to_validate) < 8:
-            raise ValueError('Password must be at least 8 characters long')
+        if not 8 < len(password_to_validate)  < 20:
+            raise ValueError('Password must be at between 8 and 20 characters long')
         hashed_password = flask_bcrypt.generate_password_hash(password_to_validate).decode("utf-8")
         self._password_hash = hashed_password
+
 
     def authenticate(self, password_to_check):
         return flask_bcrypt.check_password_hash(self._password_hash, password_to_check)
 
     books = db.relationship('Book', back_populates='user')
+    authors = association_proxy('books', 'author')
 
     serialize_rules = ('-books', '-password_hash')
     @validates("name")
@@ -70,8 +72,11 @@ class Bookstore(db.Model, SerializerMixin):
     
     # breakpoint()
     books = db.relationship('Book', back_populates='bookstore')
+    
+    
+    
 
-    serialize_rules = ('-books',)
+    serialize_rules = ('-books', "-books.bookstore")
 
     def __repr__(self):
         return f'Bookstores: {self.id}: {self.name}, {self.address}, {self.phone_number}'
@@ -86,6 +91,8 @@ class Author(db.Model, SerializerMixin):
     
 
     books = db.relationship('Book', back_populates='author')
+    
+    
 
     @validates('name')
     def validate_name_address(self, key, value):

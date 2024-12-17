@@ -9,7 +9,7 @@ const AuthorDisplay = () => {
 
   return (
     <div>
-      <h1>Author Data</h1>
+      <h1>Authors</h1>
       <ul>
         {authorData.length > 0 ? (
           authorData.map((author) => {

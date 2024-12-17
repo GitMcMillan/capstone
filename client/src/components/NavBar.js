@@ -3,31 +3,27 @@ import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
-    <nav
-      style={{
-        padding: "10px",
-        backgroundColor: "orange",
-        borderBottom: "1px solid #ccc",
-      }}
-    >
-      <Link to="/login" style={{ margin: "0 10px" }}>
-        LogIn
-      </Link>
-      <Link to="/" style={{ margin: "0 10px" }}>
-        Home
-      </Link>
-      <Link to="/users" style={{ margin: "0 10px" }}>
-        User Info
-      </Link>
-      <Link to="/books" style={{ margin: "0 10px" }}>
-        Book Info
-      </Link>
-      <Link to="/authors" style={{ margin: "0 10px" }}>
-        Authors
-      </Link>
-      <Link to="/bookstores" style={{ margin: "0 10px" }}>
-        Book Stores
-      </Link>
+    <nav className="bg-orange-500 p-4 border-b border-gray-300">
+      <div className="flex space-x-4">
+        <Link to="/login" className="text-black hover:text-gray-700">
+          LogIn
+        </Link>
+        <Link to="/" className="text-black hover:text-gray-700">
+          Home
+        </Link>
+        {/* <Link to="/users" className="text-black hover:text-gray-700">
+          User Info
+        </Link> */}
+        <Link to="/books" className="text-black hover:text-gray-700">
+          My Shelf
+        </Link>
+        <Link to="/authors" className="text-black hover:text-gray-700">
+          Authors
+        </Link>
+        <Link to="/bookstores" className="text-black hover:text-gray-700">
+          Book Stores
+        </Link>
+      </div>
     </nav>
   );
 }

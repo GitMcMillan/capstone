@@ -14,7 +14,9 @@ const BookstoreDisplay = () => {
               key={store.id}
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
             >
-              <p className="text-lg font-bold">Name: {store.name}</p>
+              <p className="text-blue-500 hover:underline">
+                Name: {store.name}
+              </p>
               <p className="text-sm text-gray-600">Address: {store.address}</p>
               <p className="text-sm text-gray-600">
                 Phone Number: {store.phone_number}

@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./NavBar";
-import UserDisplay from "./UserList";
 import BookDisplay from "./BookList";
 import BookstoreDisplay from "./BookstoreList";
 import AuthorDisplay from "./AuthorList";
@@ -31,7 +30,7 @@ function App() {
               <NavBar />
               <Switch>
                 <Route exact path="/login" component={LoginForm} />
-                <Route path="/users" component={UserDisplay} />
+                {/* <Route path="/users" component={UserDisplay} /> */}
                 <Route path="/books/:id" component={SingleBook} />
                 <Route path="/books" component={BookDisplay} />
                 <Route path="/bookstores" component={BookstoreDisplay} />

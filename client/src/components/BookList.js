@@ -59,11 +59,9 @@ const BookDisplay = () => {
 
   return (
     <div>
-      <h1>Book Data</h1>
-
       {/* submitform */}
       <form onSubmit={handleSubmit} className="mb-8 p-4 bg-gray-100 rounded-md">
-        <h2 className="text-lg font-bold mb-2">Add New Book</h2>
+        <h2 className="text-lg font-bold mb-2">Add A New Book To Your Shelf</h2>
         <div>
           <label>Title:</label>
           <input
