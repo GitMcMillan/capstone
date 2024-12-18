@@ -2,14 +2,14 @@ import React, { useContext } from "react";
 import { UserContext } from "./Helper/Context";
 
 const UserDisplay = () => {
-  const { userData } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   return (
     <div>
       <h1>User Data</h1>
       <ul>
-        {userData.length > 0 ? (
-          userData.map((item) => (
+        {user.length > 0 ? (
+          user.map((item) => (
             <li
               key={item.id}
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"

@@ -3,13 +3,15 @@ import { UserContext } from "./Helper/Context";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // const [loggedInUser, setLoggedInUser] = useState(null);
   const { logInUser } = useContext(UserContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const loginData = { username, email, password };
+    const loginData = { username, password };
+    // email no longer in logindata
     logInUser(loginData);
   };
 
@@ -28,7 +30,7 @@ function LoginForm() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
-          <div>
+          {/* <div>
             <input
               type="email"
               name="email"
@@ -37,7 +39,7 @@ function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          </div>
+          </div> */}
           <div>
             <input
               type="password"

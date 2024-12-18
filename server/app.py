@@ -14,11 +14,14 @@ from flask_bcrypt import Bcrypt
 
 # Local imports
 from config import app, db, api
+
 from flask_cors import CORS
 # Add your model imports
 from models import User, Author, Book, Bookstore
-
-CORS(app)
+# ERASE ME
+CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
+# app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+# app.config['SESSION_COOKIE_SECURE'] = True
 # bcrypt = Bcrypt(app)
 # bcrypt.init_app(app)
 
@@ -207,43 +210,82 @@ class BookByID(Resource):
 
 
 api.add_resource(BookByID, '/books/<int:id>')
+
+
 app.secret_key = 'password'
 class Login(Resource):
     def post(self):
-        try:
-            #get data thru request context
-            data = request.json
-            #chcek that you can find user by email AND password matches
-            user = User.query.filter_by(email=data.get('email', "")).first()
-            if user and user.authenticate(data.get("password","")):
-                session["user_id"] = user.id #how we log in
-                print("Session after login:", session)
-                return make_response(user.to_dict(), 200)
-            else:
-                return make_response("Invalid Credentials", 401) 
-        except Exception as e:
-            return {'error': str(e)}, 400
+        # Stephen
+        form_json = request.get_json()
+        username = form_json["username"]
+        password = form_json["password"]
+        user = User.query.filter_by(username=username).first()
+        if user and user.authenticate(password):
+            session["user_id"] = user.id
+            print("Session set:", session)
+            return user.to_dict(), 200
+        else:
+            print("Invalid credentials")
+            return "Invalid Credentials", 401
+
+
+
+
+        # Matteo
+        # try:
+        #     #get data thru request context
+        #     data = request.json
+        #     #chcek that you can find user by email AND password matches
+        #     user = User.query.filter_by(email=data.get('email', "")).first()
+        #     if user and user.authenticate(data.get("password","")):
+        #         session["user_id"] = user.id #how we log in
+        #         print(f"Session set: {session['user_id']}")
+        #         return make_response(user.to_dict(), 200)
+        #     else:
+        #         return make_response("Invalid Credentials", 401) 
+        # except Exception as e:
+        #     return {'error': str(e)}, 400
     
 api.add_resource(Login, '/login')
 
 
-import ipdb
-class Logout(Resource):
-    def delete(self):
-        try:
-        
-            response = make_response({}, 204)
+# import ipdb
 
-            if "user_id" in session:
-                del session["user_id"]
-                response.delete_cookie("session")
-                return response
-        except Exception as e:
-            return {"Error": str(e)}, 422
+# 
+class Logout(Resource):
+    
+    def delete(self):
+        session['user_id'] = None
+        return {}, 204
+        
+        # if session.get('user_id'):
+        #     session['user_id'] = None
+        #     print(session['user_id'])
+        # return make_response({}, 204)
+        # try:
+        
+        #     response = make_response({}, 204)
+
+        #     if "user_id" in session:
+        #         del session["user_id"]
+        #         response.delete_cookie("session")
+        #         return response
+        # except Exception as e:
+        #     return {"Error": str(e)}, 422
         
 api.add_resource(Logout, '/logout')
 
 class CheckSession(Resource):
+    # # Stephen
+    # def get(self):
+    #     user_id = session["user_id"]
+
+    #     if user_id:
+    #         user= User.query.filter(User.id == user_id).first()
+    #         return user.to_dict(), 200
+    #     return {}, 401
+
+    # Matteo
     def get(self):
         user_id = session.get('user_id')
         print("User ID in session:", user_id)
@@ -252,9 +294,18 @@ class CheckSession(Resource):
             print("User found:", user)
             if user:
                 return user.to_dict(), 200
-        return {}, 201
+        return {}, 401
     
 api.add_resource(CheckSession, '/check_session')
+
+# @app.before_request
+# def check_session():
+#     print(session)
+#     if session.get("user_id") is None:
+#         session["user_id"] = None
+#     else:
+#         print("User is logged in")
+#         print(session["user_id"])     
 
 
 
