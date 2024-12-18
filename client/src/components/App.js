@@ -7,6 +7,7 @@ import AuthorDisplay from "./AuthorList";
 import SingleBook from "./SingleBook";
 import SingleAuthor from "./SingleAuthor";
 import LoginForm from "./LoginForm";
+import HomePage from "./HomePage";
 import { UserProvider } from "./Helper/Context";
 import { BookProvider } from "./Helper/BookContext";
 import { BookstoreProvider } from "./Helper/BookstoreContext";
@@ -30,6 +31,7 @@ function App() {
               <NavBar />
               <Switch>
                 <Route exact path="/login" component={LoginForm} />
+                <Route exact path="/" component={HomePage} />
                 {/* <Route path="/users" component={UserDisplay} /> */}
                 <Route path="/books/:id" component={SingleBook} />
                 <Route path="/books" component={BookDisplay} />
