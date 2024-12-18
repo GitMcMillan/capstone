@@ -14,9 +14,7 @@ const BookDisplay = () => {
     bookstore_id: "",
   });
 
-  const [bookstores, setBookstores] = useState([]); // For dropdown options
-
-  // Fetch bookstore data for dropdown on component mount
+  const [bookstores, setBookstores] = useState([]);
   useEffect(() => {
     fetch("http://127.0.0.1:5555/bookstores")
       .then((response) => response.json())

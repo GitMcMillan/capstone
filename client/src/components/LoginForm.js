@@ -5,14 +5,21 @@ function LoginForm() {
   const [username, setUsername] = useState("");
   // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   // const [loggedInUser, setLoggedInUser] = useState(null);
   const { logInUser } = useContext(UserContext);
-
+  // delete
   const handleSubmit = (event) => {
     event.preventDefault();
     const loginData = { username, password };
-    // email no longer in logindata
-    logInUser(loginData);
+
+    logInUser(loginData)
+      .then(() => {
+        setError("");
+      })
+      .catch(() => {
+        setError("Wrong login information");
+      });
   };
 
   return (
