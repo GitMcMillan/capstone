@@ -1,10 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import { AuthorContext } from "./Helper/AuthorContext";
 import { useParams } from "react-router-dom";
+import { UserContext } from "./Helper/Context";
 
 const SingleAuthor = () => {
   const { id } = useParams();
   const { fetchAuthorById, authorById } = useContext(AuthorContext);
+  const { user } = useContext(UserContext);
   console.log("Author details:", authorById);
   console.log("Fetched ID:", id);
   console.log("Authors books", authorById.books);
@@ -13,8 +15,17 @@ const SingleAuthor = () => {
     fetchAuthorById(parseInt(id));
   }, [id, fetchAuthorById]);
 
-  if (!authorById) {
-    return <p>Loading Author details...</p>;
+  if (!user) {
+    return (
+      <div className="text-center p-4">
+        <h2 className="text-xl font-bold text-red-600">
+          You are not logged in
+        </h2>
+        <p className="text-gray-600">
+          Please click <span className="font-bold">Log In</span> above.
+        </p>
+      </div>
+    );
   }
 
   return (

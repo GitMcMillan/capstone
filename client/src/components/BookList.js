@@ -60,6 +60,19 @@ const BookDisplay = () => {
     ? bookData.filter((book) => book.user_id === user.id)
     : [];
 
+  if (!user) {
+    return (
+      <div className="text-center p-4">
+        <h2 className="text-xl font-bold text-red-600">
+          You are not logged in
+        </h2>
+        <p className="text-gray-600">
+          Please click <span className="font-bold">Log In</span> above.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Form to add books */}

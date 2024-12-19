@@ -2,10 +2,12 @@
 import React, { useContext, useState } from "react";
 import { AuthorContext } from "./Helper/AuthorContext";
 import { Link } from "react-router-dom";
+import { UserContext } from "./Helper/Context";
 
 const AuthorDisplay = () => {
   const { authorData, handleAddAuthor } = useContext(AuthorContext);
   const [formData, setFormData] = useState({ name: "" });
+  const { user } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,6 +22,19 @@ const AuthorDisplay = () => {
 
     setFormData({ name: "" });
   };
+
+  if (!user) {
+    return (
+      <div className="text-center p-4">
+        <h2 className="text-xl font-bold text-red-600">
+          You are not logged in
+        </h2>
+        <p className="text-gray-600">
+          Please click <span className="font-bold">Log In</span> above.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>

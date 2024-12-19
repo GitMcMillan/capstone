@@ -1,10 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { BookContext } from "./Helper/BookContext";
 import { useParams, useHistory } from "react-router-dom";
+import { UserContext } from "./Helper/Context";
 
 const SingleBook = () => {
   const { id } = useParams();
   const history = useHistory();
+  const { user } = useContext(UserContext);
+
   const {
     fetchBookById,
     bookById,
@@ -77,8 +80,17 @@ const SingleBook = () => {
 
   const closeModal = () => setShowModal(false);
 
-  if (!bookById) {
-    return <p>Loading book details...</p>;
+  if (!user) {
+    return (
+      <div className="text-center p-4">
+        <h2 className="text-xl font-bold text-red-600">
+          You are not logged in
+        </h2>
+        <p className="text-gray-600">
+          Please click <span className="font-bold">Log In</span> above.
+        </p>
+      </div>
+    );
   }
 
   return (

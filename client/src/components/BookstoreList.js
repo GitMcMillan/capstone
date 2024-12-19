@@ -1,6 +1,7 @@
 // erase
 import React, { useContext, useState } from "react";
 import { BookstoreContext } from "./Helper/BookstoreContext";
+import { UserContext } from "./Helper/Context";
 
 const BookstoreDisplay = () => {
   const { bookstoreData, setBookstoreData } = useContext(BookstoreContext);
@@ -9,6 +10,7 @@ const BookstoreDisplay = () => {
     address: "",
     phone_number: "",
   });
+  const { user } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,6 +32,19 @@ const BookstoreDisplay = () => {
       })
       .catch((error) => console.error("Error adding bookstore:", error));
   };
+
+  if (!user) {
+    return (
+      <div className="text-center p-4">
+        <h2 className="text-xl font-bold text-red-600">
+          You are not logged in
+        </h2>
+        <p className="text-gray-600">
+          Please click <span className="font-bold">Log In</span> above.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
