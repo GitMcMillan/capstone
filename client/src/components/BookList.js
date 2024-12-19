@@ -2,13 +2,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { BookContext } from "./Helper/BookContext";
 import { UserContext } from "./Helper/Context";
+import { AuthorContext } from "./Helper/AuthorContext"; // Import AuthorContext
 import { Link } from "react-router-dom";
-import { AuthorContext } from "./Helper/AuthorContext";
 
 const BookDisplay = () => {
   const { bookData, handleAddBook } = useContext(BookContext);
   const { user } = useContext(UserContext);
-  const { authorData } = useContext(AuthorContext);
+  const { authorData } = useContext(AuthorContext); // Use authors from context
 
   const [formData, setFormData] = useState({
     title: "",
@@ -29,7 +29,6 @@ const BookDisplay = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: name === "bookstore_id" ? Number(value) : value,
@@ -38,15 +37,11 @@ const BookDisplay = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const newBook = {
-      title: formData.title,
-      author: formData.author,
-      genre: formData.genre,
+      ...formData,
       page_number: Number(formData.page_number),
       bookstore_id: Number(formData.bookstore_id),
     };
-
     handleAddBook(newBook);
     setFormData({
       title: "",
@@ -57,7 +52,6 @@ const BookDisplay = () => {
     });
   };
 
-  // Filter books for user (thats logged in)
   const filteredBooks = user
     ? bookData.filter((book) => book.user_id === user.id)
     : [];
@@ -93,10 +87,10 @@ const BookDisplay = () => {
         </div>
 
         <div>
-          <label>Bookstore:</label>
+          <label>Author:</label>
           <select
-            name="bookstore_id"
-            value={formData.bookstore_id}
+            name="author"
+            value={formData.author}
             onChange={handleChange}
             required
             className="block w-full p-2 mb-2 border rounded"
