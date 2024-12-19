@@ -294,6 +294,37 @@ class CheckSession(Resource):
     
 api.add_resource(CheckSession, '/check_session')
 
+class Signup(Resource):
+    def post(self):
+        form_json = request.get_json()
+        username = form_json.get("username")
+        email = form_json.get("email")
+        password = form_json.get("password")
+
+        # Check if all required fields are provided
+        if not username or not email or not password:
+            return make_response({"error": "All fields are required: username, email, password"}, 400)
+
+        # Check if the username or email already exists
+        if User.query.filter_by(username=username).first():
+            return make_response({"error": "Username already taken"}, 400)
+        if User.query.filter_by(email=email).first():
+            return make_response({"error": "Email already registered"}, 400)
+
+        try:
+            new_user = User(username=username, email=email)
+            new_user.password = password  # Use password setter for hashing
+            db.session.add(new_user)
+            db.session.commit()
+
+            # Automatically sign in the new user
+            session["user_id"] = new_user.id
+            return make_response(new_user.to_dict(), 201)
+        except Exception as e:
+            return make_response({"error": str(e)}, 500)
+        
+api.add_resource(Signup, '/signup')
+
 # @app.before_request
 # def check_session():
 #     print(session)
