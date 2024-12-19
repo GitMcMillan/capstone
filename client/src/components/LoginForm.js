@@ -3,12 +3,9 @@ import { UserContext } from "./Helper/Context";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
-  // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  // const [loggedInUser, setLoggedInUser] = useState(null);
   const { logInUser } = useContext(UserContext);
-  // delete
   const handleSubmit = (event) => {
     event.preventDefault();
     const loginData = { username, password };

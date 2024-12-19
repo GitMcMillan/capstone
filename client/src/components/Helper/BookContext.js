@@ -66,7 +66,7 @@ export const BookProvider = ({ children }) => {
           setMessage("Book Deleted!");
           setBookById(null);
           fetchBookData();
-          // Clear the message after 3 seconds
+
           setTimeout(() => setMessage(""), 3000);
         } else {
           console.error("Failed to delete the book.");

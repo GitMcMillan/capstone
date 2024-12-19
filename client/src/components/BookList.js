@@ -57,7 +57,7 @@ const BookDisplay = () => {
 
   // Filter books for user (thats logged in)
   const filteredBooks = user
-    ? bookData.filter((book) => book.user_id === user.id) // Match book's user_id with logged-in user
+    ? bookData.filter((book) => book.user_id === user.id)
     : [];
 
   return (

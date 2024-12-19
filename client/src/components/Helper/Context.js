@@ -4,19 +4,17 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  // const [logInData, setLogInData] = useState(null);
 
   useEffect(() => {
     fetch("/check_session").then((response) => {
       if (response.ok) {
         response.json().then((user) => setUser(user));
       } else {
-        setUser(null); // Ensure no user is set if the session is invalid.
+        setUser(null);
       }
     });
   }, []);
-  // delete
-  // Handle user login
+
   const logInUser = (loginData) => {
     return fetch("/login", {
       method: "POST",
@@ -27,9 +25,9 @@ export const UserProvider = ({ children }) => {
       credentials: "include",
     }).then((response) => {
       if (response.ok) {
-        return response.json(); // Resolve the promise with user data
+        return response.json();
       } else {
-        throw new Error("Login failed"); // Reject the promise
+        throw new Error("Login failed");
       }
     });
   };

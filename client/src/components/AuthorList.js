@@ -10,10 +10,6 @@ const AuthorDisplay = () => {
   const { bookData } = useContext(BookContext);
   const { user } = useContext(UserContext);
 
-  // const associatedAuthors = authorData.filter((author) =>
-  //   bookData.some((book) => book.author_id === author.id)
-  // );
-
   const associatedAuthors = user
     ? authorData.filter((author) =>
         bookData.some(
@@ -21,11 +17,6 @@ const AuthorDisplay = () => {
         )
       )
     : [];
-
-  // Filter books for user (thats logged in)
-  // const filteredBooks = user
-  //   ? bookData.filter((book) => book.user_id === user.id) // Match book's user_id with logged-in user
-  //   : [];
 
   return (
     <div>

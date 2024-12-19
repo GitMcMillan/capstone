@@ -228,20 +228,7 @@ class Login(Resource):
 
 
 
-        # Matteo
-        # try:
-        #     #get data thru request context
-        #     data = request.json
-        #     #chcek that you can find user by email AND password matches
-        #     user = User.query.filter_by(email=data.get('email', "")).first()
-        #     if user and user.authenticate(data.get("password","")):
-        #         session["user_id"] = user.id #how we log in
-        #         print(f"Session set: {session['user_id']}")
-        #         return make_response(user.to_dict(), 200)
-        #     else:
-        #         return make_response("Invalid Credentials", 401) 
-        # except Exception as e:
-        #     return {'error': str(e)}, 400
+       
     
 api.add_resource(Login, '/login')
 
@@ -255,34 +242,14 @@ class Logout(Resource):
         session['user_id'] = None
         return {}, 204
         
-        # if session.get('user_id'):
-        #     session['user_id'] = None
-        #     print(session['user_id'])
-        # return make_response({}, 204)
-        # try:
-        
-        #     response = make_response({}, 204)
-
-        #     if "user_id" in session:
-        #         del session["user_id"]
-        #         response.delete_cookie("session")
-        #         return response
-        # except Exception as e:
-        #     return {"Error": str(e)}, 422
+       
         
 api.add_resource(Logout, '/logout')
 
 class CheckSession(Resource):
-    # # Stephen
-    # def get(self):
-    #     user_id = session["user_id"]
+   
 
-    #     if user_id:
-    #         user= User.query.filter(User.id == user_id).first()
-    #         return user.to_dict(), 200
-    #     return {}, 401
-
-    # Matteo
+    
     def get(self):
         user_id = session.get('user_id')
         print("User ID in session:", user_id)
