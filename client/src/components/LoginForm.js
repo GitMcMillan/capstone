@@ -15,11 +15,11 @@ function LoginForm() {
 
     logInUser(loginData)
       .then(() => {
-        setError(""); // Clear any error
-        window.location.href = "/"; // Redirect to homepage with a full refresh
+        setError("");
+        window.location.href = "/";
       })
       .catch(() => {
-        setError("Wrong login information"); // Display error message
+        setError("Wrong login information");
       });
   };
 

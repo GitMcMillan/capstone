@@ -3,15 +3,15 @@ import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "./Helper/Context";
 
 function NavBar() {
-  const { user, setUser } = useContext(UserContext); // Access user context
-  const history = useHistory(); // Get history for navigation
+  const { user, setUser } = useContext(UserContext);
+  const history = useHistory();
 
   const handleLogout = () => {
     fetch("/logout", { method: "DELETE" })
       .then((response) => {
         if (response.ok) {
-          setUser(null); // Clear user state
-          history.push("/login"); // Redirect to login page
+          setUser(null);
+          history.push("/login");
         }
       })
       .catch((error) => console.error("Logout error:", error));
@@ -20,14 +20,12 @@ function NavBar() {
   return (
     <nav className="bg-orange-500 p-4 border-b border-gray-300">
       <div className="flex space-x-4">
-        {!user ? ( // Show "Log In" if no user is logged in
+        {!user ? (
           <Link to="/login" className="text-black hover:text-gray-700">
             Log In
           </Link>
         ) : (
           <>
-            {" "}
-            {/* Show these links if the user is logged in */}
             <Link to="/" className="text-black hover:text-gray-700">
               Home
             </Link>

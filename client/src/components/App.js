@@ -14,14 +14,6 @@ import { BookstoreProvider } from "./Helper/BookstoreContext";
 import { AuthorProvider } from "./Helper/AuthorContext";
 
 function App() {
-  //set state values
-
-  //useeffect fetch call
-  //fetch to address
-  //then convert to json
-  //convert json data to new state
-  //.catch for errors
-
   return (
     <UserProvider>
       <BookProvider>
@@ -32,7 +24,6 @@ function App() {
               <Switch>
                 <Route exact path="/login" component={LoginForm} />
                 <Route exact path="/" component={HomePage} />
-                {/* <Route path="/users" component={UserDisplay} /> */}
                 <Route path="/books/:id" component={SingleBook} />
                 <Route path="/books" component={BookDisplay} />
                 <Route path="/bookstores" component={BookstoreDisplay} />

@@ -8,7 +8,6 @@ const BookDisplay = () => {
   const { bookData, handleAddBook } = useContext(BookContext);
   const { user } = useContext(UserContext);
 
-  // State to manage form input
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -19,7 +18,6 @@ const BookDisplay = () => {
 
   const [bookstores, setBookstores] = useState([]);
 
-  // Fetch bookstores for the dropdown
   useEffect(() => {
     fetch("/bookstores")
       .then((response) => response.json())
@@ -27,7 +25,6 @@ const BookDisplay = () => {
       .catch((err) => console.error("Error fetching bookstores:", err));
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -37,11 +34,9 @@ const BookDisplay = () => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Prepare newBook data
     const newBook = {
       title: formData.title,
       author: formData.author,
@@ -50,14 +45,14 @@ const BookDisplay = () => {
       bookstore_id: Number(formData.bookstore_id),
     };
 
-    handleAddBook(newBook); // Call context method to add book
+    handleAddBook(newBook);
     setFormData({
       title: "",
       author: "",
       genre: "",
       page_number: "",
       bookstore_id: "",
-    }); // Reset form
+    });
   };
 
   // Filter books for user (thats logged in)

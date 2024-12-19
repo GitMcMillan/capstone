@@ -18,12 +18,9 @@ from config import app, db, api
 from flask_cors import CORS
 # Add your model imports
 from models import User, Author, Book, Bookstore
-# ERASE ME
+
 CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
-# app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-# app.config['SESSION_COOKIE_SECURE'] = True
-# bcrypt = Bcrypt(app)
-# bcrypt.init_app(app)
+
 
 
 
