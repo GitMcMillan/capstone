@@ -47,6 +47,19 @@ class Authors(Resource):
 
         return [author.to_dict() for author in authors], 200
     
+    def post(self):
+        data = request.get_json()
+        name = data.get("name")
+        if not name:
+            return {"error": "Name is required"}, 400
+
+        new_author = Author(name=name)
+        db.session.add(new_author)
+        db.session.commit()
+        return new_author.to_dict(), 201
+
+
+    
 api.add_resource(Authors, '/authors')
 
 class AuthorByID(Resource):
