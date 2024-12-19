@@ -115,6 +115,25 @@ class Bookstores(Resource):
 
         return [bookstore.to_dict() for bookstore in bookstores], 200
     
+    def post(self):
+        try:
+            data = request.get_json()
+            new_bookstore = Bookstore(
+                name=data.get("name"),
+                address=data.get("address"),
+                phone_number=data.get("phone_number")
+            )
+            db.session.add(new_bookstore)
+            db.session.commit()
+            return new_bookstore.to_dict(), 201
+        except Exception as e:
+            print(f"Error: {e}")
+            return {"error": "Internal Server Error"}, 500
+    
+    
+    
+    
+    
 api.add_resource(Bookstores, '/bookstores')
 
 class Books(Resource):

@@ -56,7 +56,7 @@ class Bookstore(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False)
+    phone_number = db.Column(db.String, nullable=False)
 
     @validates('name', 'address')
     def validate_name_address(self, key, value):
@@ -66,8 +66,12 @@ class Bookstore(db.Model, SerializerMixin):
     
     @validates('phone_number')
     def validate_phone_number(self, key, value):
-        if not isinstance(value, int) or len(str(value)) > 10 or len(str(value)) > 15:
-            raise ValueError("Phone number must be integer between 10 and 15 digits")
+        
+        if not isinstance(value, str):
+            raise ValueError("Phone number must be a string")
+        
+        if not (10 <= len(value) <= 15):
+            raise ValueError("Phone number must be a string between 10 and 15 digits")
         return value
     
     # breakpoint()
