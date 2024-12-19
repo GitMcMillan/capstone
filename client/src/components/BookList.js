@@ -3,10 +3,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { BookContext } from "./Helper/BookContext";
 import { UserContext } from "./Helper/Context";
 import { Link } from "react-router-dom";
+import { AuthorContext } from "./Helper/AuthorContext";
 
 const BookDisplay = () => {
   const { bookData, handleAddBook } = useContext(BookContext);
   const { user } = useContext(UserContext);
+  const { authorData } = useContext(AuthorContext);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -91,15 +93,23 @@ const BookDisplay = () => {
         </div>
 
         <div>
-          <label>Author:</label>
-          <input
-            type="text"
-            name="author"
-            value={formData.author}
+          <label>Bookstore:</label>
+          <select
+            name="bookstore_id"
+            value={formData.bookstore_id}
             onChange={handleChange}
             required
             className="block w-full p-2 mb-2 border rounded"
-          />
+          >
+            <option value="" disabled>
+              Select Author
+            </option>
+            {authorData.map((author) => (
+              <option key={author.id} value={author.id}>
+                {author.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
