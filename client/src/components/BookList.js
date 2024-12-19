@@ -1,9 +1,12 @@
+// erase
 import React, { useContext, useState, useEffect } from "react";
 import { BookContext } from "./Helper/BookContext";
+import { UserContext } from "./Helper/Context";
 import { Link } from "react-router-dom";
 
 const BookDisplay = () => {
   const { bookData, handleAddBook } = useContext(BookContext);
+  const { user } = useContext(UserContext);
 
   // State to manage form input
   const [formData, setFormData] = useState({
@@ -15,8 +18,10 @@ const BookDisplay = () => {
   });
 
   const [bookstores, setBookstores] = useState([]);
+
+  // Fetch bookstores for the dropdown
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/bookstores")
+    fetch("/bookstores")
       .then((response) => response.json())
       .then((data) => setBookstores(data))
       .catch((err) => console.error("Error fetching bookstores:", err));
@@ -55,9 +60,14 @@ const BookDisplay = () => {
     }); // Reset form
   };
 
+  // Filter books for user (thats logged in)
+  const filteredBooks = user
+    ? bookData.filter((book) => book.user_id === user.id) // Match book's user_id with logged-in user
+    : [];
+
   return (
     <div>
-      {/* submitform */}
+      {/* Form to add books */}
       <form onSubmit={handleSubmit} className="mb-8 p-4 bg-gray-100 rounded-md">
         <h2 className="text-lg font-bold mb-2">Add A New Book To Your Shelf</h2>
         <div>
@@ -136,10 +146,10 @@ const BookDisplay = () => {
         </button>
       </form>
 
-      {/* Booklist */}
+      {/* Filtered Book List */}
       <ul>
-        {bookData.length > 0 ? (
-          bookData.map((item) => (
+        {filteredBooks.length > 0 ? (
+          filteredBooks.map((item) => (
             <li
               key={item.id}
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
@@ -163,7 +173,7 @@ const BookDisplay = () => {
             </li>
           ))
         ) : (
-          <p>Data not showing</p>
+          <p>No books available for this user.</p>
         )}
       </ul>
     </div>
