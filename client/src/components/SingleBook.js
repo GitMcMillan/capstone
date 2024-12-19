@@ -93,6 +93,17 @@ const SingleBook = () => {
     );
   }
 
+  if (!bookById) {
+    return (
+      <div className="text-center p-4">
+        <h2 className="text-xl font-bold text-gray-700">Book not found</h2>
+        <p className="text-gray-600">
+          The book you are looking for has been deleted or does not exist.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gray-100 shadow-md rounded-md p-4 mb-4">
       <h1 className="text-lg font-bold">{bookById.title}</h1>
