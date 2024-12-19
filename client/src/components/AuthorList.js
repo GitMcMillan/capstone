@@ -1,28 +1,55 @@
-import React, { useContext } from "react";
+// eraszesss
+import React, { useContext, useState } from "react";
 import { AuthorContext } from "./Helper/AuthorContext";
-import { BookContext } from "./Helper/BookContext";
 import { Link } from "react-router-dom";
-import { UserContext } from "./Helper/Context";
 
 const AuthorDisplay = () => {
-  const { authorData } = useContext(AuthorContext);
-  const { bookData } = useContext(BookContext);
-  const { user } = useContext(UserContext);
+  const { authorData, handleAddAuthor } = useContext(AuthorContext);
+  const [formData, setFormData] = useState({ name: "" });
 
-  const associatedAuthors = user
-    ? authorData.filter((author) =>
-        bookData.some(
-          (book) => book.author_id === author.id && book.user_id === user.id
-        )
-      )
-    : [];
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newAuthor = { name: formData.name };
+    handleAddAuthor(newAuthor);
+
+    setFormData({ name: "" });
+  };
 
   return (
     <div>
-      <h1>Authors</h1>
+      {/* Form to Add an Author */}
+      <form onSubmit={handleSubmit} className="mb-8 p-4 bg-gray-100 rounded-md">
+        <h2 className="text-lg font-bold mb-2">Add A New Author</h2>
+        <div>
+          <label className="block text-sm font-medium mb-1">Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="block w-full p-2 mb-4 border rounded"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Add Author
+        </button>
+      </form>
+
+      {/* Author List */}
+      <h1 className="text-xl font-bold mb-4">Authors</h1>
       <ul>
-        {associatedAuthors.length > 0 ? (
-          associatedAuthors.map((author) => (
+        {authorData.length > 0 ? (
+          authorData.map((author) => (
             <li
               key={author.id}
               className="bg-gray-100 shadow-md rounded-md p-4 mb-4"
@@ -36,7 +63,7 @@ const AuthorDisplay = () => {
             </li>
           ))
         ) : (
-          <p>No authors to display.</p>
+          <p className="text-gray-600">No authors to display.</p>
         )}
       </ul>
     </div>

@@ -1,3 +1,4 @@
+// erase
 import { createContext, useEffect, useState } from "react";
 
 export const AuthorContext = createContext();
@@ -13,6 +14,19 @@ export const AuthorProvider = ({ children }) => {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  const handleAddAuthor = (newAuthor) => {
+    fetch("http://127.0.0.1:5555/authors", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newAuthor),
+    })
+      .then((response) => response.json())
+      .then((addedAuthor) => {
+        setAuthorData((prev) => [...prev, addedAuthor]);
+      })
+      .catch((error) => console.error("Error adding author:", error));
+  };
+
   const fetchAuthorById = (id) => {
     const authorid = authorData.find((author) => author.id === parseInt(id));
     if (authorid) {
@@ -27,7 +41,13 @@ export const AuthorProvider = ({ children }) => {
 
   return (
     <AuthorContext.Provider
-      value={{ authorData, setAuthorData, fetchAuthorById, authorById }}
+      value={{
+        authorData,
+        setAuthorData,
+        fetchAuthorById,
+        authorById,
+        handleAddAuthor,
+      }}
     >
       {children}
     </AuthorContext.Provider>
