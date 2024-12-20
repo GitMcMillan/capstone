@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const BookDisplay = () => {
   const { bookData, handleAddBook } = useContext(BookContext);
   const { user } = useContext(UserContext);
-  const { authorData } = useContext(AuthorContext); // Use authors from context
+  const { authorData } = useContext(AuthorContext);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -16,6 +16,7 @@ const BookDisplay = () => {
     genre: "",
     page_number: "",
     bookstore_id: "",
+    user_id: "",
   });
 
   const [bookstores, setBookstores] = useState([]);
@@ -41,6 +42,7 @@ const BookDisplay = () => {
       ...formData,
       page_number: Number(formData.page_number),
       bookstore_id: Number(formData.bookstore_id),
+      user_id: user.id,
     };
     handleAddBook(newBook);
     setFormData({

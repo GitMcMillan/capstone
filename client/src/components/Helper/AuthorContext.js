@@ -8,14 +8,14 @@ export const AuthorProvider = ({ children }) => {
   const [authorById, setAuthorById] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/authors")
+    fetch("/authors")
       .then((r) => r.json())
       .then((data) => setAuthorData(data))
       .catch((error) => console.error("Error:", error));
   }, []);
 
   const handleAddAuthor = (newAuthor) => {
-    fetch("http://127.0.0.1:5555/authors", {
+    fetch("/authors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newAuthor),
@@ -32,7 +32,7 @@ export const AuthorProvider = ({ children }) => {
     if (authorid) {
       setAuthorById(authorid);
     } else {
-      fetch(`http://127.0.0.1:5555/authors/${id}`)
+      fetch(`/authors/${id}`)
         .then((r) => r.json())
         .then((author) => setAuthorById(author))
         .catch((error) => console.error("Error:", error));

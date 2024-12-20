@@ -82,9 +82,9 @@ function SignUpForm() {
         </form>
         {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
         <p className="text-center mt-4">
-          Already have an account?{" "}
+          Need an account?
           <a href="/login" className="text-blue-500 hover:underline">
-            Log in here
+            Log in<br></br> here
           </a>
         </p>
       </div>

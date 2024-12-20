@@ -8,27 +8,28 @@ export const BookProvider = ({ children }) => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/books")
+    fetch("/books")
       .then((r) => r.json())
       .then((data) => setBookData(data))
       .catch((error) => console.error("Error:", error));
   }, []);
 
   const handleAddBook = (newBook) => {
-    fetch("http://127.0.0.1:5555/books", {
+    fetch("/books", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newBook),
     })
       .then((r) => r.json())
       .then((newBook) => {
+        debugger;
         setBookData((prev) => [...prev, newBook]);
       })
       .catch((error) => console.error("Error adding book:", error));
   };
 
   const fetchBookData = () => {
-    fetch("http://127.0.0.1:5555/books")
+    fetch("/books")
       .then((r) => r.json())
       .then((data) => setBookData(data))
       .catch((error) => console.error("Error:", error));
@@ -39,7 +40,7 @@ export const BookProvider = ({ children }) => {
     if (bookid) {
       setBookById(bookid);
     } else {
-      fetch(`http://127.0.0.1:5555/books/${id}`)
+      fetch(`/books/${id}`)
         .then((r) => {
           if (!r.ok) {
             throw new Error(`Book with ID ${id} not found`);
@@ -57,7 +58,7 @@ export const BookProvider = ({ children }) => {
       return;
     }
 
-    fetch(`http://127.0.0.1:5555/books/${id}`, {
+    fetch(`/books/${id}`, {
       method: "DELETE",
     })
       .then((response) => {

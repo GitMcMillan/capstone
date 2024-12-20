@@ -7,14 +7,14 @@ export const BookstoreProvider = ({ children }) => {
   const [bookstoreData, setBookstoreData] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/bookstores")
+    fetch("/bookstores")
       .then((r) => r.json())
       .then((data) => setBookstoreData(data))
       .catch((error) => console.error("Error:", error));
   }, []);
 
   const handleAddBookstore = (newBookstore) => {
-    fetch("http://127.0.0.1:5555/bookstores", {
+    fetch("/bookstores", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newBookstore),

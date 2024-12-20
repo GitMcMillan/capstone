@@ -159,12 +159,12 @@ class Books(Resource):
         data = request.json
         author_name = data.get('author')
         bookstore_id = data.get('bookstore_id')
-
-        # user_id = session.get('user_id')
+        breakpoint()
+        user_id = session.get('user_id')
         
 
-        # if not user_id:
-        #     return {"error": "User not logged in"}, 401
+        if not user_id:
+            return {"error": "User not logged in"}, 401
 
         author = None
         if author_name:
@@ -182,9 +182,9 @@ class Books(Resource):
             genre=data.get('genre'),
             page_number=data.get('page_number'),
             author=author,
-            bookstore=bookstore,
-            user_id=1  
-            # user_id=user_id 
+            bookstore=bookstore
+            # user_id=1  
+            
         )
 
         db.session.add(new_book)
@@ -257,9 +257,11 @@ class Login(Resource):
         username = form_json["username"]
         password = form_json["password"]
         user = User.query.filter_by(username=username).first()
+        
         if user and user.authenticate(password):
             session["user_id"] = user.id
             print("Session set:", session)
+        
             return user.to_dict(), 200
         else:
             print("Invalid credentials")

@@ -15,27 +15,27 @@ export const UserProvider = ({ children }) => {
     });
   }, []);
 
-  const checkSession = () => {
-    return fetch("/check_session", { credentials: "include" }).then(
-      (response) => {
-        if (response.ok) {
-          return response.json().then((user) => {
-            setUser(user);
-            return user;
-          });
-        } else {
-          setUser(null);
-          throw new Error("No active session");
-        }
-      }
-    );
-  };
+  // const checkSession = () => {
+  //   return fetch("/check_session", { credentials: "include" }).then(
+  //     (response) => {
+  //       if (response.ok) {
+  //         return response.json().then((user) => {
+  //           setUser(user);
+  //           return user;
+  //         });
+  //       } else {
+  //         setUser(null);
+  //         throw new Error("No active session");
+  //       }
+  //     }
+  //   );
+  // };
 
-  useEffect(() => {
-    checkSession().catch((error) =>
-      console.log("No active session on load:", error)
-    );
-  }, []);
+  // useEffect(() => {
+  //   checkSession().catch((error) =>
+  //     console.log("No active session on load:", error)
+  //   );
+  // }, []);
 
   const logInUser = (loginData) => {
     return fetch("/login", {
@@ -47,7 +47,10 @@ export const UserProvider = ({ children }) => {
       credentials: "include",
     }).then((response) => {
       if (response.ok) {
-        return response.json();
+        return response.json().then((user) => {
+          setUser(user);
+          return user;
+        });
       } else {
         throw new Error("Login failed");
       }
@@ -88,7 +91,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, logInUser, logOutUser, checkSession, signUpUser }}
+      value={{ user, setUser, logInUser, logOutUser, signUpUser }}
     >
       {children}
     </UserContext.Provider>
