@@ -270,11 +270,16 @@ api.add_resource(Login, '/login')
 # 
 
 class Logout(Resource):
-    def delete(self):
-        if session.get('user_id'):
-            session['user_id'] = None
-            print(session['user_id'])
-        return make_response({}, 204)
+     def delete(self):
+        session.clear()  # Clears the entire session
+        print("Session cleared.")
+
+        # Create a response and set the cookie to expire
+        response = make_response({}, 204)
+        response.set_cookie('session', '', expires=0)  # Expire the session cookie
+        print("Cookie expired.")
+        
+        return response  # Return the response with the cleared cookie
 api.add_resource(Logout, '/logout')
 # class Logout(Resource):
 #     def delete(self):
