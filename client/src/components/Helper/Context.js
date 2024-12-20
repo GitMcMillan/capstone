@@ -54,6 +54,26 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const signUpUser = (signupData) => {
+    return fetch("/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(signupData),
+      credentials: "include",
+    }).then((response) => {
+      if (response.ok) {
+        return response.json().then((newUser) => {
+          setUser(newUser);
+          return newUser;
+        });
+      } else {
+        throw new Error("Signup failed");
+      }
+    });
+  };
+
   const logOutUser = () => {
     return fetch("/logout", { method: "DELETE", credentials: "include" }).then(
       (response) => {
@@ -68,7 +88,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, logInUser, logOutUser, checkSession }}
+      value={{ user, setUser, logInUser, logOutUser, checkSession, signUpUser }}
     >
       {children}
     </UserContext.Provider>

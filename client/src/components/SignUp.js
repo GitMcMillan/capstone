@@ -1,9 +1,10 @@
+// erase
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "./Helper/Context";
 
 function SignUpForm() {
-  const { setUser } = useContext(UserContext);
+  const { signUpUser } = useContext(UserContext);
   const history = useHistory();
   const [formData, setFormData] = useState({
     username: "",
@@ -23,23 +24,10 @@ function SignUpForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://127.0.0.1:5555/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error("Failed to sign up");
-      })
+    signUpUser(formData)
       .then(() => {
-        return fetch("http://127.0.0.1:5555/check_session");
-      })
-      .then((res) => res.json())
-      .then((user) => {
-        setUser(user);
         setError("");
-        history.push("/");
+        history.push("/"); // Redirect on successful signup
       })
       .catch((err) => {
         setError("Failed to sign up. Please try again.");

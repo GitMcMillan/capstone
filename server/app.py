@@ -158,7 +158,14 @@ class Books(Resource):
     def post(self):
         data = request.json
         author_name = data.get('author')
-        bookstore_id = data.get('bookstore_id') 
+        bookstore_id = data.get('bookstore_id')
+
+        # user_id = session.get('user_id')
+        
+
+        # if not user_id:
+        #     return {"error": "User not logged in"}, 401
+
         author = None
         if author_name:
             author = Author.query.filter_by(name=author_name).first()
@@ -177,6 +184,7 @@ class Books(Resource):
             author=author,
             bookstore=bookstore,
             user_id=1  
+            # user_id=user_id 
         )
 
         db.session.add(new_book)
