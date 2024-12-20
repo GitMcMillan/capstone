@@ -268,15 +268,22 @@ api.add_resource(Login, '/login')
 # import ipdb
 
 # 
+
 class Logout(Resource):
-    
     def delete(self):
-        session['user_id'] = None
-        return {}, 204
+        if session.get('user_id'):
+            session['user_id'] = None
+            print(session['user_id'])
+        return make_response({}, 204)
+api.add_resource(Logout, '/logout')
+# class Logout(Resource):
+#     def delete(self):
+#         session.clear()  
+#         return {}, 204
         
        
         
-api.add_resource(Logout, '/logout')
+# api.add_resource(Logout, '/logout')
 
 class CheckSession(Resource):
    

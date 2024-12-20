@@ -1,20 +1,16 @@
+// erase
 import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "./Helper/Context";
 
 function NavBar() {
-  const { user, setUser } = useContext(UserContext);
+  const { user, logOutUser } = useContext(UserContext);
   const history = useHistory();
 
   const handleLogout = () => {
-    fetch("/logout", { method: "DELETE" })
-      .then((response) => {
-        if (response.ok) {
-          setUser(null);
-          history.push("/login");
-        }
-      })
-      .catch((error) => console.error("Logout error:", error));
+    logOutUser()
+      .then(() => history.push("/login"))
+      .catch((err) => console.error("Logout error:", err));
   };
 
   return (
@@ -36,7 +32,7 @@ function NavBar() {
               Authors
             </Link>
             <Link to="/bookstores" className="text-black hover:text-gray-700">
-              Book Stores
+              Bookstores
             </Link>
             <button
               onClick={handleLogout}

@@ -12,6 +12,8 @@ import { UserProvider } from "./Helper/Context";
 import { BookProvider } from "./Helper/BookContext";
 import { BookstoreProvider } from "./Helper/BookstoreContext";
 import { AuthorProvider } from "./Helper/AuthorContext";
+import SignUpForm from "./SignUp";
+import Logout from "./Logout";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
               <NavBar />
               <Switch>
                 <Route exact path="/login" component={LoginForm} />
+                <Route exact path="/signup" component={SignUpForm} />
+                <Route exact path="/logout" component={Logout} />
                 <Route exact path="/" component={HomePage} />
                 <Route path="/books/:id" component={SingleBook} />
                 <Route path="/books" component={BookDisplay} />

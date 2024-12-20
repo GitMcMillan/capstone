@@ -1,23 +1,27 @@
+// ERASE
+// eee
 import React, { useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "./Helper/Context";
 
 function LoginForm() {
+  const { logInUser, checkSession } = useContext(UserContext); // Use UserContext functions
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { logInUser } = useContext(UserContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const loginData = { username, password };
 
     logInUser(loginData)
+      .then(() => checkSession()) // Validate session and update user context
       .then(() => {
         setError("");
-        window.location.href = "/";
+        history.push("/"); // Redirect to home
       })
-      .catch(() => {
-        setError("Wrong login information");
-      });
+      .catch(() => setError("Invalid credentials")); // Show error if login fails
   };
 
   return (
@@ -33,18 +37,9 @@ function LoginForm() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
             />
           </div>
-          {/* <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div> */}
           <div>
             <input
               type="password"
@@ -53,6 +48,7 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
             />
           </div>
           <button
@@ -62,6 +58,15 @@ function LoginForm() {
             Log In
           </button>
         </form>
+        {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+
+        {/* Link to switch to the signup form */}
+        <p className="text-center mt-4">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-500 hover:underline">
+            Sign up here
+          </Link>
+        </p>
       </div>
     </div>
   );

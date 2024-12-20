@@ -15,6 +15,28 @@ export const UserProvider = ({ children }) => {
     });
   }, []);
 
+  const checkSession = () => {
+    return fetch("/check_session", { credentials: "include" }).then(
+      (response) => {
+        if (response.ok) {
+          return response.json().then((user) => {
+            setUser(user);
+            return user;
+          });
+        } else {
+          setUser(null);
+          throw new Error("No active session");
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    checkSession().catch((error) =>
+      console.log("No active session on load:", error)
+    );
+  }, []);
+
   const logInUser = (loginData) => {
     return fetch("/login", {
       method: "POST",
@@ -32,8 +54,22 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const logOutUser = () => {
+    return fetch("/logout", { method: "DELETE", credentials: "include" }).then(
+      (response) => {
+        if (response.ok) {
+          setUser(null);
+        } else {
+          throw new Error("Logout failed");
+        }
+      }
+    );
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, logInUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, logInUser, logOutUser, checkSession }}
+    >
       {children}
     </UserContext.Provider>
   );
